@@ -3,7 +3,7 @@ class LeadsController < ApplicationController
   layout 'base'
   before_filter :find_project, :authorize
   before_filter :find_lead, :only => [:edit, :update, :destroy]
-  before_filter :find_lead, :only => [:list, :select]
+  before_filter :find_leads, :only => [:list, :select]
  
   def show
     @leads = @project.leads

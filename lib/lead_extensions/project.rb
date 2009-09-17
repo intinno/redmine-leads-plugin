@@ -1,6 +1,6 @@
 require_dependency 'project'
 
-module Extensions
+module LeadExtensions
   module Project
 
     def self.included(base)
@@ -16,4 +16,4 @@ module Extensions
   end
 end
 
-Project.send(:include, Extensions::Project)
+Project.send(:include, LeadExtensions::Project)

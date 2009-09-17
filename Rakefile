@@ -19,7 +19,7 @@ require 'rake/clean'
 require 'rake/rdoctask'
 require 'spec/rake/spectask'
 
-PROJECT_NAME = 'customer_plugin'
+PROJECT_NAME = 'leads_plugin'
 ZIP_FILE = PROJECT_NAME + ".zip"
 CLEAN.include('**/semantic.cache', ZIP_FILE)
 

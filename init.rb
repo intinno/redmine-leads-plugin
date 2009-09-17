@@ -1,11 +1,11 @@
 # Redmine lead plugin
 require 'redmine'
 
-require_dependency 'extensions/project'
+require_dependency 'lead_extensions/project'
 
 RAILS_DEFAULT_LOGGER.info 'Starting Lead plugin for RedMine'
 
-Redmine::Plugin.register :lead_plugin do
+Redmine::Plugin.register :leads_plugin do
   name 'Leads plugin'
   author 'Udit Sajjanhar'
   description 'This is a plugin for Redmine that can be used to track basic leads(prospective clients) information'
@@ -22,5 +22,5 @@ Redmine::Plugin.register :lead_plugin do
     permission :edit_lead, {:leads => [:edit, :update, :new, :create, :destroy]}
   end
 
-  menu :project_menu, :leads, {:controller => 'leads', :action => 'show'}, :caption => :lead_title
+  menu :project_menu, :leads, {:controller => 'leads', :action => 'show'}, :caption => "Leads"
 end
