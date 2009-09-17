@@ -1,0 +1,34 @@
+= Redmine Leads plugin
+
+This is a plugin for Redmine that can be used to track basic leads information for each project.  It was created so I could track the possible clients for each project.
+
+== Features
+
+* Store Lead data
+* Associate Leads with a project
+* Permissions to control user access to data
+
+== Getting the plugin
+
+A copy can be downloaded/installed/cloned from {GitHub}[http://github.com/intinno/redmine-leads-plugin/tree/master]
+
+
+== Install
+
+1. Follow the Redmine plugin installation steps at: http://www.redmine.org/wiki/redmine/Plugins Make sure the plugin is installed to +vendor/plugins/leads_plugin+
+2. Setup the database using the migrations. +rake db:migrate_plugins+
+3. Login to your Redmine install as an Administrator
+4. Setup the permissions for your roles
+5. Add the "Leads module" to the enabled modules for your project
+6. The link to the plugin should appear on that project's navigation as Leads
+
+== Usage
+
+
+== License
+
+This plugin is licensed under the GNU GPL v2.  See LICENSE.txt and GPL.txt for details.
+
+== Project help
+
+

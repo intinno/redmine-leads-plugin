@@ -1,0 +1,5 @@
+This plugin has been built by using the redmine-customer-plugin. 
+
+Credit for the redmine-customer-plugin goes to:
+Eric Davis <edavis[AT]littlestreamsoftware[DOT]com>
+

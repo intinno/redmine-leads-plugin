@@ -1,0 +1,38 @@
+<div class="contextual">
+  <%= link_to_if_authorized l(:button_edit), {:controller => 'leads', :action => 'edit', :id => @project, :lead_id => @lead.id}, :class => 'icon icon-edit' unless @lead.nil? %>
+  <%= link_to_if_authorized l(:label_lead_view), {:controller => 'leads', :action => 'show', :id => @project}, :class => 'icon icon-user' %>
+  <%= link_to_if_authorized l(:label_lead_assign), {:controller => 'leads', :action => 'select', :id => @project}, :class => 'icon icon-move' %>
+  <%= link_to_if_authorized l(:label_lead_list), {:controller => 'leads', :action => 'list', :id => @project}, :class => 'icon icon-users' %>
+  <%= link_to_if_authorized l(:label_lead_new), {:controller => 'leads', :action => 'new', :id => @project}, :class => 'icon icon-add' %>
+</div>
+
+<h2><%= l(:label_lead) %></h2>
+
+<% unless @leads.empty? -%>
+  <% @leads.each do |lead| %>
+    <div class="box">
+      <p> 
+        <%= l(:field_lead_name) %>: <%= h lead.name %> 
+        <span class="details-link small-text"> 
+          <%= link_to_function "Details", "$('lead-#{lead.id}').toggle()" %>
+        </span>
+      </p>
+      <span style="display:none;" id="lead-<%=lead.id%>">
+        <p> <%= l(:field_lead_company) %>: <%= h lead.company %> </p>
+        <p> <%= l(:field_lead_address) %>: <%= h lead.address %> </p>
+        <p> <%= l(:field_lead_phone) %>: <%= h lead.phone %> </p>
+        <p> <%= l(:field_lead_email) %>: <%= mail_to lead.email unless lead.email.blank? %> </p>
+        <p> <%= l(:field_lead_website) %>: <%= link_to lead.website unless lead.website.blank? %> </p>
+      </span>
+    </div>
+    <br/><br/>
+  <% end %>
+<% else %>
+  <p class="nodata"><%=l(:label_no_data)%></p>
+<% end %>
+
+<% content_for(:header_tags) do %>
+  <style type="text/css">
+    .icon-users { background-image: url(../../images/users.png); }
+  </style>
+<% end %>
