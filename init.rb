@@ -16,11 +16,11 @@ Redmine::Plugin.register :leads_plugin do
 
   
   project_module :lead_module do
-    permission :view_lead, {:leads => [:show]}
-    permission :assign_lead, {:leads => [:assign, :select]}
-    permission :see_lead_list, {:leads => [:list]}
-    permission :edit_lead, {:leads => [:edit, :update, :new, :create, :destroy]}
+    permission :view_lead, {:leads => [:show]}, :public => true
+    permission :assign_lead, {:leads => [:assign, :select]}, :public => true
+    permission :see_lead_list, {:leads => [:list, :search]}, :public => true
+    permission :edit_lead, {:leads => [:edit, :update, :new, :create, :destroy]}, :public => true
   end
 
-  menu :project_menu, :leads, {:controller => 'leads', :action => 'show'}, :caption => "Leads"
+  menu :top_menu, :leads, {:controller => 'leads', :action => 'search'}, :caption => "Leads"
 end
