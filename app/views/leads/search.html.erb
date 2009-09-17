@@ -1,0 +1,35 @@
+<div class="contextual">
+  <%#= link_to_if_authorized l(:label_lead_view), {:controller => 'leads', :action => 'show', :id => @project}, :class => 'icon icon-user' %>
+  <%#= link_to_if_authorized l(:label_lead_assign), {:controller => 'leads', :action => 'select', :id => @project}, :class => 'icon icon-move' %>
+  <%#= link_to_if_authorized l(:label_lead_list), {:controller => 'leads', :action => 'list', :id => @project}, :class => 'icon icon-users' %>
+  <%= link_to l(:label_lead_new), {:controller => 'leads', :action => 'new'}, :class => 'icon icon-add' %>
+</div>
+
+<h2><%= l(:label_lead_plural) %></h2>
+
+There will be  a search form here.<br/><br/>
+
+<% unless @leads.empty? %>
+  <table class="list">
+    <% @leads.each do |lead| %>
+      <tr class="<%= cycle('odd', 'even') %>">
+        <td><%= link_to lead.pretty_name, {:controller => 'leads', :action => 'show', :id => lead.id} %></td>
+        <td align="right">
+          <small>
+              <%= link_to l(:button_edit), {:controller => 'leads', :action => 'edit', :id => lead.id}, :class => 'icon icon-edit' %>
+              <%= link_to l(:button_delete), {:controller => 'leads', :action => 'destroy', :id => lead.id}, :confirm => l(:text_are_you_sure), :method => :post, :class => 'icon icon-del' %>
+          </small>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+<% else %>
+  <p class="nodata"><%=l(:label_no_data)%></p>
+<% end %>
+
+<% content_for(:header_tags) do %>
+  <style type="text/css">
+    .icon-users { background-image: url(../../images/users.png); }
+  </style>
+<% end %>
+
