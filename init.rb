@@ -2,6 +2,8 @@
 require 'redmine'
 
 require_dependency 'lead_extensions/project'
+require_dependency 'lead_extensions/user'
+require_dependency 'lead_extensions/active_record'
 
 RAILS_DEFAULT_LOGGER.info 'Starting Lead plugin for RedMine'
 

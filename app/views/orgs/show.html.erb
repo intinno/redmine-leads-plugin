@@ -1,0 +1,36 @@
+<% title "Org" %>
+
+<p>
+  <strong>Name:</strong>
+  <%=h @org.name %>
+</p>
+<p>
+  <strong>Location:</strong>
+  <%=h @org.location %>
+</p>
+<p>
+  <strong>Category:</strong>
+  <%=h @org.category %>
+</p>
+<p>
+  <strong>Head Count:</strong>
+  <%=h @org.head_count %>
+</p>
+<p>
+  <strong>Contact Details:</strong>
+  <%=h @org.contact_details %>
+</p>
+<p>
+  <strong>Email:</strong>
+  <%=h @org.email %>
+</p>
+<p>
+  <strong>Website:</strong>
+  <%=h @org.website %>
+</p>
+
+<p>
+  <%= link_to "Edit", edit_org_path(@org) %> |
+  <%= link_to "Destroy", @org, :confirm => 'Are you sure?', :method => :delete %> |
+  <%= link_to "View All", orgs_path %>
+</p>

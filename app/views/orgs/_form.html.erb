@@ -1,0 +1,32 @@
+<% form_for @org do |f| %>
+  <%= f.error_messages %>
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :location %><br />
+    <%= f.text_area :location %>
+  </p>
+  <p>
+    <%= f.label :category %><br />
+    <%= f.text_field :category %>
+  </p>
+  <p>
+    <%= f.label :head_count %><br />
+    <%= f.text_field :head_count %>
+  </p>
+  <p>
+    <%= f.label :contact_details %><br />
+    <%= f.text_area :contact_details %>
+  </p>
+  <p>
+    <%= f.label :email %><br />
+    <%= f.text_field :email %>
+  </p>
+  <p>
+    <%= f.label :website %><br />
+    <%= f.text_field :website %>
+  </p>
+  <p><%= f.submit "Submit" %></p>
+<% end %>

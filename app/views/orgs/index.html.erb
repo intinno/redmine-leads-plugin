@@ -1,0 +1,29 @@
+<% title "Orgs" %>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Location</th>
+    <th>Category</th>
+    <th>Head Count</th>
+    <th>Contact Details</th>
+    <th>Email</th>
+    <th>Website</th>
+  </tr>
+  <% for org in @orgs %>
+    <tr>
+      <td><%=h org.name %></td>
+      <td><%=h org.location %></td>
+      <td><%=h org.category %></td>
+      <td><%=h org.head_count %></td>
+      <td><%=h org.contact_details %></td>
+      <td><%=h org.email %></td>
+      <td><%=h org.website %></td>
+      <td><%= link_to "Show", org %></td>
+      <td><%= link_to "Edit", edit_org_path(org) %></td>
+      <td><%= link_to "Destroy", org, :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+  <% end %>
+</table>
+
+<p><%= link_to "New Org", new_org_path %></p>

@@ -1,27 +1,37 @@
 class Lead < ActiveRecord::Base
 
+  #aasociations
   has_many :leads_projects, :dependent => :destroy
   has_many :projects, :through => :leads_projects
+  belongs_to :org
 
-  # name or company is mandatory
-  validates_presence_of :name, :if => :company_unsetted
-  validates_presence_of :company, :if => :name_unsetted
-  validates_uniqueness_of :name, :scope => :company
+  #extensions
+  acts_as_paranoid
+  acts_as_watchable
 
-  validates_format_of :email, :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i, 
-    :allow_nil => true, :allow_blank => true
-  #TODO validate website address
-  #TODO validate skype_name contact
-  
+  #attributes
+  attr_accessor :org_name
+
+  #constants
+  STATES = ["New", "In Progess", "Converted", "Rejected", "Useless"]
+
+  validates_associated :org, :message => "Organization Details are Invalid"
+
+  def name
+    self.org.name
+  end
+
    def pretty_name
-     result = []
-     [self.name, self.company].each do |field|
-       result << field unless field.blank?
-     end
-     
-     return result.join(", ")
+     name
    end
-  
+
+  def assignable_members
+    User.active.find(:all, :include => [:global_role]).select{|m| m.global_role.leads_assignable?}.sort
+  end
+
+  def watching_members
+    User.active.find(:all, :include => [:global_role]).select{|m| m.global_role.leads_watchable?}.sort
+  end
 
   def project_ids(force_reload = false)
     self.leads_projects(force_reload).collect{|lp| lp.project_id}
@@ -42,17 +52,14 @@ class Lead < ActiveRecord::Base
 
     #create new joins
     (ids - existing_project_ids).each do |id|
-      self.leads_projects.create(:project_id => id)
+      self.build_or_create_association("leads_projects", :project_id => id)
     end
   end
-  private
-  
-  def name_unsetted
-    self.name.blank?
-  end
-  
-  def company_unsetted
-    self.company.blank?
+
+  def org_attributes=(attrs)
+    self.new_record? || self.org.nil? ?
+      self.build_or_create_association("org", attrs) :
+      self.org.update_attributes(attrs)
   end
 
 end

@@ -2,33 +2,47 @@
 
 <% content_for :header_tags do %>
   <%= stylesheet_link_tag 'multiple_select', :plugin => 'leads' %>
+  <%= javascript_include_tag 'organization', :plugin => 'leads' %>
 <% end %>
 
 <div class="box"> 
-  <p>
-    <%= f.text_field 'name', :label=>l(:field_lead_name) -%>
-  </p>
-  <p>
-    <%= f.text_field 'company', :label=>l(:field_lead_company) -%>
-  </p>
-  <p>
-    <%= f.text_area 'address', :label=>l(:field_lead_address), :rows => 5 -%>
-  </p>
-  <p>
-    <%= f.text_field 'phone', :label=>l(:field_lead_phone) -%>
-  </p>
-  <p>
-    <%= f.text_field 'email', :label=>l(:field_lead_email) -%>
-  </p>
-  <p>
-    <%= f.text_field 'website', :label=>l(:field_lead_website) -%>
-  </p>
-  <p>
-    <%= f.text_field 'skype_name', :label=>l(:field_lead_skype) -%>
-  </p>
-  <p>
-  <%= label_tag "Products" %>
-  <%= collection_multiple_select 'lead', 'project_ids', Project.products, :id, :name, 
-    {:selected_items => @lead.project_ids, :outer_class => "multiple-select"} -%>
-  </p>
+  <fieldset>
+    <legend> Organization Details </legend>
+    <% fields_for "lead[org_attributes]", @org, :builder => TabularFormBuilder do |ff| %>
+      <p><%= ff.text_field 'name', :label=> "Name", :required => true -%></p>
+
+      <p><%= ff.text_field 'location', :label=> "Area, City", :required => true -%></p>
+
+      <p><%= ff.select 'category', Org::CATEGORIES, :label=> "Category" -%></p>
+      
+      <p><%= ff.text_field 'head_count', :label=> "Head Count", :size => 10 -%></p>
+      
+      <p><%= ff.text_field 'email', :label=> "Email" -%></p>
+      
+      <p><%= ff.text_field 'website', :label=> "Website" -%></p>
+      
+      <p><%= ff.text_area 'contact_details', :label=> "Contact Details", :rows => 4 -%></p>
+    <% end %>
+  </fieldset>
+
+  <fieldset>
+    <legend> Lead Details </legend>
+
+    <p><%= f.select 'state', Lead::STATES -%></p>
+
+    <p><%= f.select 'assigned_to_id', @lead.assignable_members.collect{|p| [p.name, p.id]}, :include_blank => true -%></p>
+
+
+    <p><%= label_tag "Related Product(s)" %></p>
+    <%= collection_multiple_select 'lead', 'project_ids', Project.products, :id, :name, 
+      {:selected_items => @lead.project_ids, :outer_class => "multiple-select"} -%>
+      
+      <p><label><%= "Watchers" %></label>
+      <% @lead.watching_members.each do |user| %>
+        <label class="floating">
+          <%= check_box_tag 'lead[watcher_user_ids][]', user.id, @lead.watcher_user_ids.include?(user.id) %> <%= h user%>
+        </label>
+      <% end %>
+    </p>
+  </fieldset>
 </div>

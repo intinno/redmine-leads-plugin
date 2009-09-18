@@ -9,3 +9,7 @@ ul.multiple-select label {
   float:none;
   margin-left:0px;
 }
+
+.nodisplay{ display:none;}
+
+.notvisible{ visibility:hidden;}
