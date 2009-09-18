@@ -1,6 +1,7 @@
 class Lead < ActiveRecord::Base
 
-  belongs_to :project
+  has_many :leads_projects, :dependent => :destroy
+  has_many :projects, :through => :leads_projects
 
   # name or company is mandatory
   validates_presence_of :name, :if => :company_unsetted
@@ -21,6 +22,29 @@ class Lead < ActiveRecord::Base
      return result.join(", ")
    end
   
+
+  def project_ids(force_reload = false)
+    self.leads_projects(force_reload).collect{|lp| lp.project_id}
+  end
+
+  def project_ids=(ids)
+    #remove the blank ids
+    ids.reject!{|i| i.blank?}
+
+    existing_project_ids = self.project_ids(true) 
+    joins = self.leads_projects(true)
+
+    #delete joins
+    (existing_project_ids - ids).each do |id|
+      join = joins.detect{|j| j.project_id == id}
+      join.destroy
+    end
+
+    #create new joins
+    (ids - existing_project_ids).each do |id|
+      self.leads_projects.create(:project_id => id)
+    end
+  end
   private
   
   def name_unsetted

@@ -1,0 +1,11 @@
+ul.multiple-select {
+  list-style-type:none;
+  margin-left:180px;
+  margin-top:0px;
+  padding:0px;
+}
+
+ul.multiple-select label {
+  float:none;
+  margin-left:0px;
+}
