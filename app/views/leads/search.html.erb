@@ -1,3 +1,7 @@
+<% content_for :header_tags do %>
+  <%= stylesheet_link_tag 'leads', :plugin => 'leads' %>
+<% end %>
+
 <div class="contextual">
   <%#= link_to_if_authorized l(:label_lead_view), {:controller => 'leads', :action => 'show', :id => @project}, :class => 'icon icon-user' %>
   <%#= link_to_if_authorized l(:label_lead_assign), {:controller => 'leads', :action => 'select', :id => @project}, :class => 'icon icon-move' %>

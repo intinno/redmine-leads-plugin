@@ -1,3 +1,7 @@
+<% content_for :header_tags do %>
+  <%= stylesheet_link_tag 'leads', :plugin => 'leads' %>
+<% end %>
+
 <div class="contextual">
   <%= link_to "Search", {:controller => 'leads', :action => 'search', :id => @project}, :class => 'icon icon-search' %>
 </div>

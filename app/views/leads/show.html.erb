@@ -1,27 +1,50 @@
+<% content_for :header_tags do %>
+  <%= stylesheet_link_tag 'leads', :plugin => 'leads' %>
+<% end %>
+
 <div class="contextual">
   <%= link_to "Search", {:controller => 'leads', :action => 'search', :id => @project}, :class => 'icon icon-search' %>
   <%= link_to l(:button_edit), {:controller => 'leads', :action => 'edit', :id => @lead.id}, :class => 'icon icon-edit' unless @lead.nil? %>
   <%= link_to l(:label_lead_new), {:controller => 'leads', :action => 'new'}, :class => 'icon icon-add' %>
 </div>
 
-<h2><%= l(:label_lead) %></h2>
+<h2><%= @org.name %> #<%= @lead.id %></h2>
 
-    <div class="box">
-      <p> 
-        <%= l(:field_lead_name) %>: <%= h @lead.name %> 
-        <span class="details-link small-text"> 
-          <%= link_to_function "Details", "$('lead-#{@lead.id}').toggle()" %>
-        </span>
-      </p>
-      <span style="display:none;" id="lead-<%=@lead.id%>">
-        <p> <%= l(:field_lead_company) %>: <%= h @lead.company %> </p>
-        <p> <%= l(:field_lead_address) %>: <%= h @lead.address %> </p>
-        <p> <%= l(:field_lead_phone) %>: <%= h @lead.phone %> </p>
-        <p> <%= l(:field_lead_email) %>: <%= mail_to @lead.email unless @lead.email.blank? %> </p>
-        <p> <%= l(:field_lead_website) %>: <%= link_to @lead.website unless @lead.website.blank? %> </p>
-      </span>
-    </div>
-    <br/><br/>
+<div class="issue details">
+  <%= avatar(@lead.author, :size => "64") %>
+  <h3><%=h @org.name %></h3>
+  <p class="author">
+  <%= authoring @lead.created_at, @lead.author %>.
+  <%= l(:label_updated_time, distance_of_time_in_words(Time.now, @lead.updated_at)) + '.' if @lead.created_at != @lead.updated_at %>
+  </p>
+
+  <table width="100%">
+    <tr>
+      <td style="width:15%" class="status"><b><%=l(:field_status)%>:</b></td><td style="width:35%" class="status"><%= @lead.state %></td>
+      <td style="width:15%" class="start-date"><b>Location:</b></td><td style="width:35%"><%= @org.location %></td>
+    </tr>
+    <tr>
+      <td class="assigned-to"><b><%=l(:field_assigned_to)%>:</b></td><td><%= avatar(@lead.assigned_to, :size => "14") %><%= @lead.assigned_to ? link_to_user(@lead.assigned_to) : "-" %></td>
+      <td class="progress"><b>Head Count:</b></td><td class="progress"><%= @org.head_count %></td>
+    </tr>
+    <tr>
+      <td style="width:15%" class="status" rowspan="3"><b>Contact Details:</b></td><td style="width:35%" class="status" rowspan="3"><%= @org.contact_details %></td>
+      <td style="width:15%" class="start-date"><b>Category:</b></td><td style="width:35%"><%= @org.category %></td>
+    </tr>
+    <tr>
+      <td style="width:15%" class="start-date"><b>Wesite:</b></td><td style="width:35%"><%= @org.website %></td>
+    </tr>
+    <tr>
+      <td style="width:15%" class="start-date"><b>Email:</b></td><td style="width:35%"><%= @org.email %></td>
+    </tr>
+
+  </table>
+  <hr />
+
+  <div id="watchers">
+    <%= render :partial => 'watchers/watchers', :locals => {:watched => @lead} %>
+  </div>
+</div>
 
 <% content_for(:header_tags) do %>
   <style type="text/css">

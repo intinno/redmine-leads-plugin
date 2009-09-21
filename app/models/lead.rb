@@ -4,6 +4,8 @@ class Lead < ActiveRecord::Base
   has_many :leads_projects, :dependent => :destroy
   has_many :projects, :through => :leads_projects
   belongs_to :org
+  belongs_to :author, :class_name => "User"
+  belongs_to :assigned_to, :class_name => "User"
 
   #extensions
   acts_as_paranoid
