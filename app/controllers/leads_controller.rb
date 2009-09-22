@@ -9,6 +9,7 @@ class LeadsController < ApplicationController
 
   def show
     @org = @lead.org
+    @lead_note = LeadNote.new
   end
 
     

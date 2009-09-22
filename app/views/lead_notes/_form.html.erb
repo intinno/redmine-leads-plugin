@@ -1,0 +1,35 @@
+<div class="box">
+  <fieldset>
+    <legend><small>Date and Type</small></legend>
+    <%= error_messages_for :lead_note %>
+
+    <p> <%= f.text_field :date, :label => "Date", :required => true, :alt_text => "Set Note Date" %><%= calendar_for('label_note_date')  %></p>
+
+    <p> <%= f.select :category, LeadNote::CATEGORIES, :label => "Category", :required => true %></p>
+  </fieldset>
+  <fieldset>
+    <legend><small>Details</small></legend>
+    <% text_area_options = {:rows => 3, :cols => 60} %>
+    <p><%= f.eoc_text_area :existing_systems , {:label => "Existing System", :alt_text => "Describe Exisiting Systems"}.merge(text_area_options) %></p>
+
+    <p><%= f.eoc_text_area :quote_given , {:label => "Quote Given", :alt_text => "Add Quote Given"}.merge(text_area_options) %></p>
+
+    <p><%= f.eoc_select :response , LeadNote::RESPONSE_TYPES, {:label => "Response", :include_blank => true}, {} %></p>
+
+    <p><%= f.eoc_text_area :docs_sent , {:label => "Documents Sent", :alt_text => "Add Docs Sent"}.merge(text_area_options)  %></p>
+
+    <p><%= f.eoc_text_area :features_interested , {:label => "Features Interested In", :alt_text => "List the features interested in."}.merge(text_area_options)  %></p>
+
+    <p><%= f.eoc_text_area :customizations , {:label => "Customizations Required", :alt_text => "List Customizations required, if any" }.merge(text_area_options)  %></p>
+
+    <p><%= f.eoc_text_area :issues , {:label => "Issues/Problems", :alt_text => "List Issues, if any"}.merge(text_area_options)  %></p>
+
+    <%= f.hidden_field :lead_id, :value => @lead.id %>
+  </fieldset>
+</div>
+
+<%= submit_tag l(:button_save) -%>
+<% if controller.action_name.eql?("edit") %>
+  or <%= link_to "Cancel", {:controller => "leads", :action => "show", :id => @lead.id} %>
+<% end %>
+<br/><br/><br/><br/>

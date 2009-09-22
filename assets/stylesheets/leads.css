@@ -1,1 +1,40 @@
-.icon-search  { background-image: url(../images/zoom_in.png); }
+.nodisplay {display:none}
+.icon-search  { background-image: url(/images/zoom_in.png); }
+.icon-lead-notes  { background-image: url(/images/ticket_edit.png); }
+
+#note-details{
+  padding:10px;
+  padding-left:25px;
+}
+
+#note-details h4{
+  margin-top:0px;
+  margin-bottom:10px;
+}
+
+.note-author {
+  padding:10px;
+  padding-top:0px;
+}
+
+tr.note-attr td.name{
+  font-weight:bold;
+  width:150px;
+  padding:5px;
+  padding-left:15px;
+  padding-bottom:20px;
+  vertical-align:top;
+  color:gray;
+}
+
+tr.note-attr td.value{
+  padding-bottom:20px;
+}
+
+#associated-notes{
+  width:45%;
+}
+
+#edit-lead{
+  float:right;
+}

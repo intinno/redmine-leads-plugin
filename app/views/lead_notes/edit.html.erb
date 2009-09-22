@@ -1,0 +1,9 @@
+
+<% content_for :header_tags do %>
+  <%= stylesheet_link_tag 'leads', :plugin => 'leads' %>
+  <%= javascript_include_tag 'edit_on_click', :plugin => 'highrise-edit-on-click' %>
+<% end %>
+
+<% labelled_tabular_form_for :lead_note, @lead_note, :url => {:controller => "lead_notes", :action => 'update', :id => @lead_note.id} do |f|  %>
+  <%= render :partial => "lead_notes/form", :locals => {:f => f} %>
+<% end %>

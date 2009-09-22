@@ -3,6 +3,7 @@ class Lead < ActiveRecord::Base
   #aasociations
   has_many :leads_projects, :dependent => :destroy
   has_many :projects, :through => :leads_projects
+  has_many :notes, :class_name => "LeadNote"
   belongs_to :org
   belongs_to :author, :class_name => "User"
   belongs_to :assigned_to, :class_name => "User"

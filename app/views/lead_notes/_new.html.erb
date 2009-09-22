@@ -1,0 +1,3 @@
+<% labelled_tabular_form_for :lead_note, @lead_note, :url => {:controller => "lead_notes", :action => 'create'} do |f|  %>
+  <%= render :partial => "lead_notes/form", :locals => {:f => f} %>
+<% end %>

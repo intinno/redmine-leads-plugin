@@ -1,0 +1,30 @@
+<% content_for :header_tags do %>
+  <%= stylesheet_link_tag 'leads', :plugin => 'leads' %>
+<% end %>
+
+<div id="associated-notes">
+<% if @lead.notes.size > 0 %>
+  <h3>Associated Notes</h3>
+  <% @lead.notes.each do |note| %>
+    <div class="<%= cycle('odd', 'even') %>">
+      <div id="note-details">
+        <h4>
+          <%= image_tag("/images/projects.png") %>  <%= note.category %> on <%= note.date.strftime("%a %d %b %H:%M:%S") %>
+        </h4>
+        <div id="edit-lead"><%= link_to "Change", {:controller => "lead_notes", :action => "edit", :id => note.id} %></div>
+        <div class="note-author">
+          <small><%=authoring note.created_at, note.author.name %></small>
+        </div>
+        <table>
+          <% note.attributes_entered.each do |attribute, value| %>
+            <tr class="note-attr">
+              <td class="name"><%= attribute.camelize %></div>: 
+              <td class="value"><%= value %></div>
+            </tr>
+          <% end %>
+        </table>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+</div>
