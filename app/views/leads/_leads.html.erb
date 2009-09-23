@@ -1,0 +1,38 @@
+<div id="leads">
+  <div class="tabs">
+    <ul><li><%= link_to_function "Results", "return false;", :class => "selected" %></li></ul>
+  </div>
+  <% unless @leads.empty? %>
+    <table class="list left-th">
+      <tr>
+        <th>Organization Name</th>
+        <th>Location</th>
+        <th>Added By</th>
+        <th>Assigned To</th>
+        <th>State</th>
+        <th>Products</th>
+        <th>Latest Note</th>
+        <th>Manage</th>
+      </tr>
+      <% @leads.each do |lead| %>
+        <tr class="<%= cycle('odd', 'even') %>">
+          <td><%= link_to lead.pretty_name, {:controller => 'leads', :action => 'show', :id => lead.id}, :title => "Show Lead" %></td>
+          <td><%= lead.org.location %></td>
+          <td><%= lead.author.name %></td>
+          <td><%= lead.assigned_to.nil? ? "" : lead.assigned_to.name %></td>
+          <td><%= lead.state %></td>
+          <td><%= @product_name %></td>
+          <td><%= lead.latest_note.nil? ? "" : lead.latest_note.summary %></td>
+          <td align="right">
+            <small>
+              <%= link_to l(:button_edit), {:controller => 'leads', :action => 'edit', :id => lead.id}, :class => 'icon icon-edit' %>
+              <%= link_to l(:button_delete), {:controller => 'leads', :action => 'destroy', :id => lead.id}, :confirm => l(:text_are_you_sure), :method => :post, :class => 'icon icon-del' %>
+            </small>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  <% else %>
+    <p class="nodata"><%=l(:label_no_data)%></p>
+  <% end %>
+</div>

@@ -38,3 +38,11 @@ tr.note-attr td.value{
 #edit-lead{
   float:right;
 }
+
+table.left-th th{
+  text-align:left;
+}
+
+table.search td{
+  padding-right:20px;
+}

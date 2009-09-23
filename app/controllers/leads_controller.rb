@@ -2,9 +2,21 @@ class LeadsController < ApplicationController
   unloadable
   layout 'base'
   before_filter :find_lead, :only => [:show, :edit, :update, :destroy]
-  before_filter :find_leads, :only => [:list, :select, :search]
+  auto_complete_for :location, :name
+  auto_complete_for :org, :name
 
-  def search 
+  def index
+    @leads = []
+  end
+
+  def search
+    @leads = Lead.search(params)
+   
+    product_id = params[:lead][:product_id]
+    @product_name = 
+      product_id.blank? ? "" : Project.find(product_id).name 
+
+    render :partial => "leads", :layout => false
   end
 
   def show

@@ -9,7 +9,7 @@
   <% if hide_new_note %>
     <%= link_to "Add Note", {:controller => 'lead_notes', :action => 'new', :lead_id => @lead.id}, :class => 'icon icon-lead-notes', :onclick => "showAndScrollTo('new-note', 'new-note'); return false;" %>
   <% end %>
-  <%= link_to "Search", {:controller => 'leads', :action => 'search'}, :class => 'icon icon-search' %>
+  <%= link_to "Search", {:controller => 'leads', :action => 'index'}, :class => 'icon icon-search' %>
   <%= link_to l(:button_edit), {:controller => 'leads', :action => 'edit', :id => @lead.id}, :class => 'icon icon-edit' unless @lead.nil? %>
   <%= link_to l(:label_lead_new), {:controller => 'leads', :action => 'new'}, :class => 'icon icon-add' %>
 </div>

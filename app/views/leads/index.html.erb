@@ -1,5 +1,7 @@
 <% content_for :header_tags do %>
   <%= stylesheet_link_tag 'leads', :plugin => 'leads' %>
+  <%= javascript_include_tag 'fill_date', :plugin => 'leads' %>
+  <%= javascript_include_tag 'edit_on_click', :plugin => 'highrise-edit-on-click' %>
 <% end %>
 
 <div class="contextual">
@@ -11,25 +13,16 @@
 
 <h2><%= l(:label_lead_plural) %></h2>
 
-There will be  a search form here.<br/><br/>
+<fieldset>
+  <legend>Search Leads</legend>
+  <% form_remote_tag(:url => {:controller => "leads", :action => "search"}, :method => :get, :update => "results") do %>
+    <%= render :partial => "search" %>
+  <% end %>
+</fieldset>
 
-<% unless @leads.empty? %>
-  <table class="list">
-    <% @leads.each do |lead| %>
-      <tr class="<%= cycle('odd', 'even') %>">
-        <td><%= link_to lead.pretty_name, {:controller => 'leads', :action => 'show', :id => lead.id} %></td>
-        <td align="right">
-          <small>
-              <%= link_to l(:button_edit), {:controller => 'leads', :action => 'edit', :id => lead.id}, :class => 'icon icon-edit' %>
-              <%= link_to l(:button_delete), {:controller => 'leads', :action => 'destroy', :id => lead.id}, :confirm => l(:text_are_you_sure), :method => :post, :class => 'icon icon-del' %>
-          </small>
-        </td>
-      </tr>
-    <% end %>
-  </table>
-<% else %>
-  <p class="nodata"><%=l(:label_no_data)%></p>
-<% end %>
+<div id="results">
+  <%= render :partial => 'leads' %>
+</div>
 
 <% content_for(:header_tags) do %>
   <style type="text/css">

@@ -26,4 +26,10 @@ class LeadNote < ActiveRecord::Base
 
     data_entered
   end
+
+  def summary
+    short_date = date.strftime("%a %b %d")
+    "#{category} on #{short_date}"
+  end
+
 end

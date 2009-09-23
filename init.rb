@@ -24,5 +24,5 @@ Redmine::Plugin.register :leads_plugin do
     permission :edit_lead, {:leads => [:edit, :update, :new, :create, :destroy]}, :public => true
   end
 
-  menu :top_menu, :leads, {:controller => 'leads', :action => 'search'}, :caption => "Leads"
+  menu :top_menu, :leads, {:controller => 'leads', :action => 'index'}, :caption => "Leads"
 end
