@@ -3,6 +3,7 @@
 <% content_for :header_tags do %>
   <%= stylesheet_link_tag 'multiple_select', :plugin => 'leads' %>
   <%= javascript_include_tag 'organization', :plugin => 'leads' %>
+  <%= javascript_include_tag 'edit_on_click', :plugin => 'highrise-edit-on-click' %>
 <% end %>
 
 <div class="box"> 
@@ -13,27 +14,27 @@
 
       <p><%= ff.text_field 'location', :label=> "Area, City", :required => true -%></p>
 
-      <p><%= ff.select 'category', Org::CATEGORIES, :label=> "Category" -%></p>
+      <p><%= ff.select 'category', Org::CATEGORIES, :label=> "Category", :required => true -%></p>
       
-      <p><%= ff.text_field 'head_count', :label=> "Head Count", :size => 10 -%></p>
+      <p><%= ff.eoc_text_field 'head_count', :label=> "Head Count", :size => 10, :alt_text => "Enter the number of students" -%></p>
       
-      <p><%= ff.text_field 'email', :label=> "Email" -%></p>
+      <p><%= ff.eoc_text_field 'email', :label=> "Email", :alt_text => "Enter Email" -%></p>
       
-      <p><%= ff.text_field 'website', :label=> "Website" -%></p>
+      <p><%= ff.eoc_text_field 'website', :label=> "Website", :alt_text => "Add Website Address" -%></p>
       
-      <p><%= ff.text_area 'contact_details', :label=> "Contact Details", :rows => 4 -%></p>
+      <p><%= ff.eoc_text_area 'contact_details', :label=> "Contact Details", :rows => 4, :alt_text => "Add address and phone number" -%></p>
     <% end %>
   </fieldset>
 
   <fieldset>
     <legend> Lead Details </legend>
 
-    <p><%= f.select 'state', Lead::STATES -%></p>
+    <p><%= f.select 'state', Lead::STATES, :required => true -%></p>
 
-    <p><%= f.select 'assigned_to_id', @lead.assignable_members.collect{|p| [p.name, p.id]}, :include_blank => true -%></p>
+    <p><%= f.eoc_select 'assigned_to_id', @lead.assignable_members.collect{|p| [p.name, p.id]}, {:include_blank => true}, {} -%></p>
 
 
-    <p><%= label_tag "Related Product(s)" %></p>
+    <p><%= label_tag "Related Product(s)" %><span class="required">*</span></p>
     <%= collection_multiple_select 'lead', 'project_ids', Project.products, :id, :name, 
       {:selected_items => @lead.project_ids, :outer_class => "multiple-select"} -%>
       

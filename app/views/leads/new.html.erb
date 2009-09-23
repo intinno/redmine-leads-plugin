@@ -6,7 +6,7 @@
   <%= link_to "Search", {:controller => 'leads', :action => 'search', :id => @project}, :class => 'icon icon-search' %>
 </div>
 
-<h2><%= l(:label_lead_new) %></h2>
+<h2>New Lead</h2>
 
 <% labelled_tabular_form_for :lead, @lead, :url =>{:action => 'create'} do |f|  %>
   <%= render :partial => 'form', :locals => {:f => f}  %>
