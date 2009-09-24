@@ -61,6 +61,7 @@ class Lead < ActiveRecord::Base
       leads : 
       leads & LeadNote.find(:all, :conditions => "date <= '#{end_date} 23:59:59'", :include => :lead).collect{|n| n.lead}.uniq
 
+    leads.reject{|l| l.not_visible_to?(User.current)}
   end
 
   def name
@@ -80,7 +81,26 @@ class Lead < ActiveRecord::Base
   end
 
   def watching_members
-    User.active.find(:all, :include => [:global_role]).select{|m| m.global_role.leads_watchable?}.sort
+    assignable_members
+  end
+
+  def not_visible_to?(user)
+    !visible_to?(user)
+  end
+
+  def visible_to?(user)
+    editable_by?(user) ||
+    self.watcher_user_ids.include?(user.id)
+  end
+
+  def editable_by?(user)
+    user.admin? ||
+    self.assigned_to_id == user.id ||
+    self.author_id == user.id 
+  end
+
+  def not_editable_by?(user)
+    !editable_by?(user)
   end
 
   def project_ids(force_reload = false)

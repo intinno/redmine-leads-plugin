@@ -24,10 +24,12 @@
           <td><%= @product_name %></td>
           <td><%= lead.latest_note.nil? ? "" : lead.latest_note.summary %></td>
           <td align="right">
-            <small>
-              <%= link_to l(:button_edit), {:controller => 'leads', :action => 'edit', :id => lead.id}, :class => 'icon icon-edit' %>
-              <%= link_to l(:button_delete), {:controller => 'leads', :action => 'destroy', :id => lead.id}, :confirm => l(:text_are_you_sure), :method => :post, :class => 'icon icon-del' %>
-            </small>
+            <% if lead.editable_by?(User.current) %>
+              <small>
+                <%= link_to l(:button_edit), {:controller => 'leads', :action => 'edit', :id => lead.id}, :class => 'icon icon-edit' %>
+                <%= link_to l(:button_delete), {:controller => 'leads', :action => 'destroy', :id => lead.id}, :confirm => l(:text_are_you_sure), :method => :post, :class => 'icon icon-del' %>
+              </small>
+            <% end %>
           </td>
         </tr>
       <% end %>

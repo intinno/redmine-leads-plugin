@@ -5,10 +5,9 @@
 <% end %>
 
 <div class="contextual">
-  <%#= link_to_if_authorized l(:label_lead_view), {:controller => 'leads', :action => 'show', :id => @project}, :class => 'icon icon-user' %>
-  <%#= link_to_if_authorized l(:label_lead_assign), {:controller => 'leads', :action => 'select', :id => @project}, :class => 'icon icon-move' %>
-  <%#= link_to_if_authorized l(:label_lead_list), {:controller => 'leads', :action => 'list', :id => @project}, :class => 'icon icon-users' %>
-  <%= link_to l(:label_lead_new), {:controller => 'leads', :action => 'new'}, :class => 'icon icon-add' %>
+  <% if Lead.assignable_members.include?(User.current) %>
+    <%= link_to l(:label_lead_new), {:controller => 'leads', :action => 'new'}, :class => 'icon icon-add' %>
+  <% end %>
 </div>
 
 <h2><%= l(:label_lead_plural) %></h2>

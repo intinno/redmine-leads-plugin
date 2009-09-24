@@ -6,12 +6,16 @@
 <% hide_new_note = controller.controller_class_name.eql?("LeadsController") %>
 
 <div class="contextual">
-  <% if hide_new_note %>
-    <%= link_to "Add Note", {:controller => 'lead_notes', :action => 'new', :lead_id => @lead.id}, :class => 'icon icon-lead-notes', :onclick => "showAndScrollTo('new-note', 'new-note'); return false;" %>
-  <% end %>
   <%= link_to "Search", {:controller => 'leads', :action => 'index'}, :class => 'icon icon-search' %>
-  <%= link_to l(:button_edit), {:controller => 'leads', :action => 'edit', :id => @lead.id}, :class => 'icon icon-edit' unless @lead.nil? %>
-  <%= link_to l(:label_lead_new), {:controller => 'leads', :action => 'new'}, :class => 'icon icon-add' %>
+  <% if @lead.editable_by?(User.current) %>
+    <% if hide_new_note %>
+      <%= link_to "Add Note", {:controller => 'lead_notes', :action => 'new', :lead_id => @lead.id}, :class => 'icon icon-lead-notes', :onclick => "showAndScrollTo('new-note', 'new-note'); return false;" %>
+  <% end %>
+    <%= link_to l(:button_edit), {:controller => 'leads', :action => 'edit', :id => @lead.id}, :class => 'icon icon-edit' unless @lead.nil? %>
+  <% end %>
+  <% if Lead.assignable_members.include?(User.current) %>
+    <%= link_to l(:label_lead_new), {:controller => 'leads', :action => 'new'}, :class => 'icon icon-add' %>
+  <% end %>
 </div>
 
 <h2><%= @org.name %> #<%= @lead.id %></h2>

@@ -2,6 +2,8 @@ class LeadsController < ApplicationController
   unloadable
   layout 'base'
   before_filter :find_lead, :only => [:show, :edit, :update, :destroy]
+  before_filter :check_permission
+ 
   auto_complete_for :location, :name
   auto_complete_for :org, :name
 
@@ -31,6 +33,7 @@ class LeadsController < ApplicationController
   end
 
   def update
+    params[:lead][:org_attributes][:location] = params[:location][:name]
     @lead.watcher_user_ids = params[:lead][:watcher_user_ids]
     if @lead.update_attributes(params[:lead])
       flash[:notice] = l(:notice_successful_update)
@@ -56,6 +59,7 @@ class LeadsController < ApplicationController
   end
 
   def create
+    params[:lead][:org_attributes][:location] = params[:location][:name]
     @lead = Lead.new(params[:lead])
     @lead.author_id = @current_user.id
     @lead.watcher_user_ids = params[:lead][:watcher_user_ids]
@@ -72,12 +76,25 @@ class LeadsController < ApplicationController
   
   def find_lead
     @lead = Lead.find_by_id(params[:id])
+    render_404 if @lead.not_visible_to?(User.current)
   rescue ActiveRecord::RecordNotFound
     render_404
   end
   
   def find_leads
     @leads = Lead.find(:all) || []
+  end
+
+  def check_permission
+    allowed = true
+    if (['new', 'create'].include?(self.action_name))
+      allowed = Lead.assignable_members.include?(User.current)
+    elsif (['destroy', 'edit', 'update'].include?(self.action_name))
+      allowed = @lead.editable_by?(User.current)
+    elsif (['show'].include?(self.action_name))
+      allowed = @lead.visible_to?(User.current)
+    end
+    render_404 unless allowed
   end
 
 end

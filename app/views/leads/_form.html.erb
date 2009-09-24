@@ -12,7 +12,8 @@
     <% fields_for "lead[org_attributes]", @org, :builder => TabularFormBuilder do |ff| %>
       <p><%= ff.text_field 'name', :label=> "Name", :required => true -%></p>
 
-      <p><%= ff.text_field 'location', :label=> "Area, City", :required => true -%></p>
+      <p><label>Location<span class="required"> *</span></label>
+      <%= text_field_with_auto_complete 'location', 'name', :label=> "Area, City", :required => true, :value => @org.location -%></p>
 
       <p><%= ff.select 'category', Org::CATEGORIES, :label=> "Category", :required => true -%></p>
       
