@@ -2,18 +2,18 @@
   <%= stylesheet_link_tag 'leads', :plugin => 'leads' %>
 <% end %>
 
-<div id="associated-notes">
-<% if @lead.notes.size > 0 %>
-  <h3>Associated Notes</h3>
-  <% @lead.notes.each do |note| %>
+<div id="associated-contacts">
+<% if @lead.contacts.size > 0 %>
+  <h3>Associated Contacts</h3>
+  <% @lead.contacts.each do |note| %>
     <div class="<%= cycle('odd', 'even') %>">
       <div id="note-details">
         <h4>
-          <%= image_tag("/images/projects.png") %>  <%= note.category %> on <%= note.date.strftime("%a %d %b %H:%M:%S") %>
+          <%= image_tag("/images/user.png") %>  <%= note.name %>, <%= note.city %>
         </h4>
         <div id="edit-lead">
           <%= image_tag "/images/edit.png" %> 
-          <small><%= link_to "Change", {:controller => "lead_notes", :action => "edit", :id => note.id} %></small>
+          <small><%= link_to "Change", {:controller => "lead_contacts", :action => "edit", :id => note.id, :from_lead => true} %></small>
         </div>
         <div class="note-author">
           <small><%=authoring note.created_at, note.author.name %></small>

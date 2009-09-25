@@ -4,6 +4,7 @@ class Lead < ActiveRecord::Base
   has_many    :leads_projects,  :dependent => :destroy
   has_many    :projects,        :through => :leads_projects
   has_many    :notes,           :class_name => "LeadNote"
+  has_many    :contacts,        :class_name => "LeadContact"
   has_one     :latest_note,     :class_name => "LeadNote",    :order => "lead_notes.date DESC"
 
   belongs_to  :org

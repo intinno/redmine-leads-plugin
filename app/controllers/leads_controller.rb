@@ -1,6 +1,7 @@
 class LeadsController < ApplicationController
   unloadable
-  layout 'base'
+  layout 'crm'
+  menu_item :leads
   before_filter :find_lead, :only => [:show, :edit, :update, :destroy]
   before_filter :check_permission
  
@@ -24,6 +25,7 @@ class LeadsController < ApplicationController
   def show
     @org = @lead.org
     @lead_note = LeadNote.new
+    @lead_contact = LeadContact.new
   end
 
     

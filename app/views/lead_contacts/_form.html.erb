@@ -1,0 +1,39 @@
+<% send_to_lead = params[:from_lead] || from_lead %> 
+
+<div class="box">
+  <fieldset>
+    <legend>Contact Details</legend>
+    <%= error_messages_for :lead_contact %>
+
+    <p> <%= f.text_field :name, :label => "Name", :required => true %></p>
+    
+    <p>
+      <label>City<span class="required"> *</span></label>
+      <%= text_field_with_auto_complete 'location', 'name', :value => @lead_contact.city -%>
+    </p>
+
+    <p><%= f.eoc_text_field 'email', :label=> "Email", :alt_text => "Enter Email" -%></p>
+      
+    <p><%= f.eoc_text_field 'website', :label=> "Website", :alt_text => "Add Website Address" -%></p>
+      
+    <p><%= f.eoc_text_area 'contact_details', :label=> "Contact Details", :rows => 4, :alt_text => "Add address and phone number" -%></p>
+
+    <% if @lead %>
+      <%= f.hidden_field :lead_id, :value => @lead.id %>
+    <% end %>
+
+    <% if send_to_lead %>
+      <%= hidden_field_tag :send_to_lead, true %>
+    <% end %>
+  </fieldset>
+</div>
+
+<%= submit_tag l(:button_save) -%>
+<% if controller.action_name.eql?("edit") %>
+  <% if send_to_lead %>
+    or <%= link_to "Cancel", {:controller => "leads", :action => "show", :id => @lead.id} %>
+  <% else %>
+    or <%= link_to "Cancel", {:controller => "lead_contacts", :action => "show", :id => @lead_contact.id} %>
+  <% end %>
+<% end %>
+<br/><br/><br/><br/>

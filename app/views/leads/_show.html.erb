@@ -3,14 +3,18 @@
   <%= javascript_include_tag 'edit_on_click', :plugin => 'highrise-edit-on-click' %>
 <% end %>
 
-<% hide_new_note = controller.controller_class_name.eql?("LeadsController") %>
 
 <div class="contextual">
-  <%= link_to "Search", {:controller => 'leads', :action => 'index'}, :class => 'icon icon-search' %>
+  <%= link_to "search", {:controller => 'leads', :action => 'index'}, :class => 'icon icon-search' %>
   <% if @lead.editable_by?(User.current) %>
-    <% if hide_new_note %>
-      <%= link_to "Add Note", {:controller => 'lead_notes', :action => 'new', :lead_id => @lead.id}, :class => 'icon icon-lead-notes', :onclick => "showAndScrollTo('new-note', 'new-note'); return false;" %>
-  <% end %>
+      <%= link_to "add note", 
+        {:controller => 'lead_notes', :action => 'new', :lead_id => @lead.id}, 
+        :class => 'icon icon-lead-notes', 
+        :onclick => "$('new-contact').hide();showAndScrollTo('new-note', 'new-note'); return false;" %>
+      <%= link_to "add contact", 
+        {:controller => 'lead_contacts', :action => 'new', :lead_id => @lead.id}, 
+        :class => 'icon icon-lead-contacts', 
+        :onclick => "$('new-note').hide();showAndScrollTo('new-contact', 'new-contact'); return false;" %>
     <%= link_to l(:button_edit), {:controller => 'leads', :action => 'edit', :id => @lead.id}, :class => 'icon icon-edit' unless @lead.nil? %>
   <% end %>
   <% if Lead.assignable_members.include?(User.current) %>
@@ -57,12 +61,22 @@
 </div>
 
 <br/>
-<%= render :partial => "lead_notes/index" %>
+<div style="overflow:hidden">
+  <%= render :partial => "lead_notes/index" %>
+  <%= render :partial => "lead_contacts/index" %>
+</div>
 <br/>
 
-<div id="new-note" style="<%= hide_new_note ? "display:none" : "" %>">
+<div class="clear:both;"></div>
+
+<div id="new-note" style="display:none">
   <h3>New Note</h3>
   <%= render :partial => "lead_notes/new" %>
+</div>
+
+<div id="new-contact" style="display:none">
+  <h3>New Contact</h3>
+  <%= render :partial => "lead_contacts/new", :locals => {:from_lead => true} %>
 </div>
 
 <% content_for(:header_tags) do %>

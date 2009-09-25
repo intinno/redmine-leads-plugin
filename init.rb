@@ -24,5 +24,11 @@ Redmine::Plugin.register :leads_plugin do
     permission :edit_lead, {:leads => [:edit, :update, :new, :create, :destroy]}, :public => true
   end
 
-  menu :top_menu, :leads, {:controller => 'leads', :action => 'index'}, :caption => "Leads"
+  menu :top_menu, :leads, {:controller => 'leads', :action => 'index'}, :caption => "CRM"
+
+Redmine::MenuManager.map :crm_menu do |menu|
+  menu.push :leads, {:controller => 'leads', :action => 'index'}, :caption => "Leads"
+  menu.push :contacts, {:controller => 'lead_contacts', :action => 'index'}, :caption => "Contacts"
 end
+end
+

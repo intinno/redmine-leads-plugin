@@ -1,0 +1,30 @@
+<% content_for :header_tags do %>
+  <%= stylesheet_link_tag 'leads', :plugin => 'leads' %>
+  <%= javascript_include_tag 'edit_on_click', :plugin => 'highrise-edit-on-click' %>
+<% end %>
+
+<div class="contextual">
+  <% if Lead.assignable_members.include?(User.current) %>
+    <%= link_to l(:label_lead_new), {:controller => 'lead_contacts', :action => 'new'}, :class => 'icon icon-add' %>
+  <% end %>
+</div>
+
+<h2>Search Contacts</h2>
+
+<fieldset>
+  <legend>Search Contacts</legend>
+  <% form_remote_tag(:url => {:controller => "lead_contacts", :action => "search"}, :method => :get, :update => "results") do %>
+    <%= render :partial => "search" %>
+  <% end %>
+</fieldset>
+
+<div id="results">
+  <%= render :partial => 'contacts' %>
+</div>
+
+<% content_for(:header_tags) do %>
+  <style type="text/css">
+    .icon-users { background-image: url(../../images/users.png); }
+  </style>
+<% end %>
+

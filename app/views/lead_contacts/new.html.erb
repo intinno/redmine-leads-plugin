@@ -1,0 +1,11 @@
+<% if params[:send_to_lead] %>
+  <%= render :partial => "leads/show" %>
+  <%= javascript_tag "showAndScrollTo('new-contact', 'new-contact')" %>
+<% else %>
+
+<% content_for :header_tags do %>
+  <%= stylesheet_link_tag 'leads', :plugin => 'leads' %>
+  <%= javascript_include_tag 'edit_on_click', :plugin => 'highrise-edit-on-click' %>
+<% end %>
+  <%= render :partial => "new", :locals => {:from_lead => false} %>
+<% end %>

@@ -1,6 +1,7 @@
 .nodisplay {display:none}
 .icon-search  { background-image: url(/images/zoom_in.png); }
 .icon-lead-notes  { background-image: url(/images/ticket_edit.png); }
+.icon-lead-contacts  { background-image: url(/images/user_page.png); }
 
 #note-details{
   padding:10px;
@@ -33,6 +34,13 @@ tr.note-attr td.value{
 
 #associated-notes{
   width:45%;
+  float:left;
+}
+
+#associated-contacts{
+  width:45%;
+  float:right;
+  margin-right:20px;
 }
 
 #edit-lead{
@@ -45,4 +53,8 @@ table.left-th th{
 
 table.search td{
   padding-right:20px;
+}
+
+#new-contact, #new-note {
+  width:50%;
 }

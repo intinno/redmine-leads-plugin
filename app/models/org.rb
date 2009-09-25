@@ -6,4 +6,6 @@ class Org < ActiveRecord::Base
 
   validates_presence_of :name
   validates_presence_of :location
+
+  format_attributes ["contact_details"]
 end
