@@ -28,12 +28,17 @@
   </fieldset>
 </div>
 
-<%= submit_tag l(:button_save) -%>
-<% if controller.action_name.eql?("edit") %>
+<%= submit_tag l(:button_save) -%> or 
+<% if ["new", "edit"].include?(controller.action_name) %>
   <% if send_to_lead %>
-    or <%= link_to "Cancel", {:controller => "leads", :action => "show", :id => @lead.id} %>
+    <%= link_to "Cancel", {:controller => "leads", :action => "show", :id => @lead.id} %>
   <% else %>
-    or <%= link_to "Cancel", {:controller => "lead_contacts", :action => "show", :id => @lead_contact.id} %>
+    <% if @lead_contact.new_record? %>
+      <%= link_to "Cancel", {:controller => "lead_contacts", :action => "index"} %>
+    <% else %>
+      <%= link_to "Cancel", {:controller => "lead_contacts", :action => "show", :id => @lead_contact.id} %>
+    <% end %>
+
   <% end %>
 <% end %>
 <br/><br/><br/><br/>

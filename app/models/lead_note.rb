@@ -19,8 +19,12 @@ class LeadNote < ActiveRecord::Base
   def attributes_entered
     data_entered = []
 
-    DATA_ATTRIBUTES.each do |attribute|
-      value = self.send("#{attribute}_html")
+    (DATA_ATTRIBUTES + ["other_details"]).each do |attribute|
+      begin 
+        value = self.send("#{attribute}_html")
+      rescue 
+        value = self.send("#{attribute}")
+      end
       data_entered << [attribute, value] unless value.blank?
     end
 

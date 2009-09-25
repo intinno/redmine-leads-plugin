@@ -1,5 +1,5 @@
 class LeadNotesController < ApplicationController
-  lauout 'crm'
+  layout 'crm'
   before_filter :find_lead, :only => [:create]
   auto_complete_for :location, :name
   menu_item :leads

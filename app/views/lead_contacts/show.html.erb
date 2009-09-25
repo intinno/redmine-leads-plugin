@@ -1,7 +1,7 @@
 <div class="contextual">
   <%= link_to "search", {:controller => 'lead_contacts', :action => 'index'}, :class => 'icon icon-search' %>
-  <% if @contact.editable_by?(User.current) %>
-    <%= link_to l(:button_edit), {:controller => 'lead_contacts', :action => 'edit', :id => @contact.id}, :class => 'icon icon-edit' unless @contact.nil? %>
+  <% if @lead_contact.editable_by?(User.current) %>
+    <%= link_to l(:button_edit), {:controller => 'lead_contacts', :action => 'edit', :id => @lead_contact.id}, :class => 'icon icon-edit' unless @lead_contact.nil? %>
   <% end %>
   <% if Lead.assignable_members.include?(User.current) %>
     <%= link_to "new", {:controller => 'lead_contacts', :action => 'new'}, :class => 'icon icon-add' %>
@@ -13,11 +13,11 @@
 
 <div class="box">
     <table>
-      <tr><td><b>Name:</b></td><td><%= @contact.name %></td></tr>
-      <tr><td><b>City:</b></td><td><%= @contact.city %></td></tr>
-      <tr><td><b>Website:</b></td><td><%= @contact.website %></td></tr>
-      <tr><td><b>Email:</b></td><td><%= @contact.email %></td></tr>
-      <tr><td style="vertical-align:top"><b>Contact Details:</b></td><td><%= @contact.contact_details_html %></td></tr>
+      <tr><td><b>Name:</b></td><td><%= @lead_contact.name %></td></tr>
+      <tr><td><b>City:</b></td><td><%= @lead_contact.city %></td></tr>
+      <tr><td><b>Website:</b></td><td><%= @lead_contact.website %></td></tr>
+      <tr><td><b>Email:</b></td><td><%= @lead_contact.email %></td></tr>
+      <tr><td style="vertical-align:top"><b>Contact Details:</b></td><td><%= @lead_contact.contact_details_html %></td></tr>
     </table>
 </div>
 

@@ -21,8 +21,12 @@
         <table>
           <% note.attributes_entered.each do |attribute, value| %>
             <tr class="note-attr">
-              <td class="name"><%= attribute.camelize %></div>: 
-              <td class="value"><%= value %></div>
+              <td class="name"><%= attribute.camelize %></td>: 
+              <% if attribute.eql?("other_details") %>
+                <td class="value"><%= textilizable value %></td>
+              <% else %>
+                <td class="value"><%= value %></td>
+              <% end %>
             </tr>
           <% end %>
         </table>

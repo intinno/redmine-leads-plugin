@@ -1,6 +1,7 @@
 module LeadsHelper
   include WatchersHelper
   include TimelogHelper
+  include CalendarHelper
 
   def write_date_ranges
     content_tag(:span,
@@ -16,4 +17,5 @@ module LeadsHelper
     content_tag(:span, "#{Date.civil(Date.today.year, 1, 1)},#{Date.civil(Date.today.year, 12, 31)}", :id => "date-range-9") ,
     :class => "nodisplay" )
   end
+
 end

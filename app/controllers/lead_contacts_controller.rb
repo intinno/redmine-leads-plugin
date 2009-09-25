@@ -1,6 +1,8 @@
 class LeadContactsController < ApplicationController
   layout 'crm'
   before_filter :find_lead, :only => [:create]
+  before_filter :find_lead_contact, :only => [:show, :edit, :update]
+  before_filter :check_permission
   auto_complete_for :location, :name
   menu_item :contacts
 
@@ -38,7 +40,6 @@ class LeadContactsController < ApplicationController
 
   def update
     params[:lead_contact][:city] = params[:location][:name]
-    @lead_contact = LeadContact.find(params[:id])
     @lead = @lead_contact.lead
 
     if @lead_contact.update_attributes(params[:lead_contact])
@@ -50,12 +51,10 @@ class LeadContactsController < ApplicationController
   end
 
   def edit
-    @lead_contact = LeadContact.find(params[:id])
     @lead = @lead_contact.lead
   end
 
   def show
-    @contact = LeadContact.find(params[:id])
   end
   
   private
@@ -68,9 +67,26 @@ class LeadContactsController < ApplicationController
     end
   end
 
+  def find_lead_contact 
+    @lead_contact = LeadContact.find(params[:id])
+  end
+
   def lead_or_contact_url
     (params[:send_to_lead] ?  
       {:controller => "leads", :action => "show", :id => @lead.id} :
       {:controller => "lead_contacts", :action => "show", :id => @lead_contact.id})
   end
+  
+  def check_permission
+    allowed = true
+    if (['new', 'create'].include?(self.action_name))
+      allowed = Lead.assignable_members.include?(User.current)
+    elsif (['destroy', 'edit', 'update'].include?(self.action_name))
+      allowed = @lead_contact.editable_by?(User.current)
+    elsif (['show'].include?(self.action_name))
+      allowed = @lead_contact.visible_to?(User.current)
+    end
+    render_404 unless allowed
+  end
+
 end
