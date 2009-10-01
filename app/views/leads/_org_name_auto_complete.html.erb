@@ -1,0 +1,9 @@
+<ul>
+  <% @items.each do |item| %>
+    <li>
+      <span class="org-name"><%= item.name %></span>
+      <span class="nodisplay org-id"><%= item.id %></span>
+    </li>
+
+  <% end %>
+</ul>

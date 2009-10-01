@@ -1,0 +1,38 @@
+<% if @org.new_record? %>
+<fieldset>
+  <legend> Organization Details </legend>
+
+  <div id="existing-org" >
+    <p>
+      <label>Name <span class="required">*</span></label>
+      <%= text_field_with_auto_complete :org, :name, {}, :select => "org-name", :after_update_element => "appendOrgId" %>
+      <span class="nodisplay"><%= link_to_function " or add new", "showNewOrg();", :id => "new-link" %></span>
+    </p>
+    <%= javascript_tag  "Element.insert($('org_name'), {after:$('new-link')})" %>
+    <%= f.hidden_field 'org_id' %>
+  </div>
+
+  <div id="new-org" style="display:none;" class="new-org">
+    <% fields_for "lead[org_attributes]", @org, :builder => TabularFormBuilder do |ff| %>
+      <p>
+        <%= ff.text_field 'name', :label=> "Name", :required => true -%>
+        <%= link_to_function "or find existing", "showExistingOrg();" %>
+      </p>
+
+      <p><label>Location<span class="required"> *</span></label>
+      <%= text_field_with_auto_complete 'location', 'name', :label=> "Area, City", :required => true, :value => @org.location -%></p>
+
+      <p><%= ff.select 'category', Org::CATEGORIES, :label=> "Category", :required => true -%></p>
+
+      <p><%= ff.eoc_text_field 'head_count', :label=> "Head Count", :size => 10, :alt_text => "Enter the number of students" -%></p>
+
+      <p><%= ff.eoc_text_field 'email', :label=> "Email", :alt_text => "Enter Email" -%></p>
+
+      <p><%= ff.eoc_text_field 'website', :label=> "Website", :alt_text => "Add Website Address" -%></p>
+
+      <p><%= ff.eoc_text_area 'contact_details', :label=> "Contact Details", :rows => 4, :alt_text => "Add address and phone number" -%></p>
+    <% end %>
+  </div>
+</fieldset>
+<%= javascript_tag "showExistingOrg();"%>
+<% end %>
