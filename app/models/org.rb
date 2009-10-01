@@ -1,6 +1,6 @@
 class Org < ActiveRecord::Base
 
-  CATEGORIES = ["College", "School", "Coaching"]
+  CATEGORIES = ["College", "School", "Coaching", "Institute", "Publishing House", "Government Organization", "Company"]
   has_many :leads
   acts_as_paranoid
 

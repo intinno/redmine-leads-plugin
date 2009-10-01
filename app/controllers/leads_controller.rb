@@ -63,7 +63,7 @@ class LeadsController < ApplicationController
   def create
     params[:lead][:org_attributes][:location] = params[:location][:name]
     @lead = Lead.new(params[:lead])
-    @lead.author_id = @current_user.id
+    @lead.author_id = User.current.id
     @lead.watcher_user_ids = params[:lead][:watcher_user_ids]
     if @lead.save
       flash[:notice] = l(:notice_successful_create)
