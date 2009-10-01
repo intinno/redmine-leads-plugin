@@ -15,14 +15,14 @@
   </div>
 
   <div id="new-org" style="display:none;" class="new-org">
-    <% fields_for "lead[org_attributes]", @org, :builder => TabularFormBuilder do |ff| %>
+    <% fields_for "#{belongs_to}[org_attributes]", org, :builder => TabularFormBuilder do |ff| %>
       <p>
         <%= ff.text_field 'name', :label=> "Name", :required => true -%>
         <%= link_to_function "or find existing", "showExistingOrg('#{belongs_to}');" %>
       </p>
 
       <p><label>Location<span class="required"> *</span></label>
-      <%= text_field_with_auto_complete 'location', 'name', :label=> "Area, City", :required => true, :value => @org.location -%></p>
+      <%= text_field_with_auto_complete 'location', 'name', :label=> "Area, City", :required => true, :value => org.location -%></p>
 
       <p><%= ff.select 'category', Org::CATEGORIES, :label=> "Category", :required => true -%></p>
 

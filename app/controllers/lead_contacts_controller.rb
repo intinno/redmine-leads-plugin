@@ -3,6 +3,7 @@ class LeadContactsController < ApplicationController
   before_filter :find_lead, :only => [:create]
   before_filter :find_lead_contact, :only => [:show, :edit, :update]
   before_filter :check_permission, :except => [:auto_complete_for_org_name]
+  before_filter :set_location_name, :only => [:auto_complete_for_location_name, :create, :update]
   auto_complete_for :location, :name
   auto_complete_for :org, :name
   menu_item :contacts
@@ -39,7 +40,7 @@ class LeadContactsController < ApplicationController
       flash[:notice] = l(:notice_successful_create)
       redirect_to lead_or_contact_url 
     else
-      @org = Org.new if @lead 
+      @org = Org.new 
       render :action => "new"
     end
   end
@@ -76,6 +77,7 @@ class LeadContactsController < ApplicationController
     render :partial => "leads/org_name_auto_complete"
   end
 
+
   private
   
   def find_lead
@@ -106,6 +108,12 @@ class LeadContactsController < ApplicationController
       allowed = @lead_contact.visible_to?(User.current)
     end
     render_404 unless allowed
+  end
+
+  def set_location_name
+    if params[:location][:name_1]
+      params[:location][:name] = params[:location][:name_1]
+    end
   end
 
 end

@@ -1,15 +1,17 @@
 <% send_to_lead = params[:from_lead] || from_lead %> 
 
 <div class="box">
+    <%= error_messages_for :lead_contact %>
+  <%= render :partial => "leads/org_details", :locals => {:f => f, :belongs_to => "lead_contact", :org => org} %>
+  <br/>
   <fieldset>
     <legend>Contact Details</legend>
-    <%= error_messages_for :lead_contact %>
 
     <p> <%= f.text_field :name, :label => "Name", :required => true %></p>
     
     <p>
       <label>City<span class="required"> *</span></label>
-      <%= text_field_with_auto_complete 'location', 'name', :value => @lead_contact.city -%>
+      <%= text_field_with_auto_complete 'location', 'name_1', {:value => @lead_contact.city, :id => "location_name_1"}, :url => {:action => "auto_complete_for_location_name", :controller => "lead_contacts"} -%>
     </p>
 
     <p><%= f.eoc_text_field 'email', :label=> "Email", :alt_text => "Enter Email" -%></p>
@@ -26,8 +28,6 @@
       <%= hidden_field_tag :send_to_lead, true %>
     <% end %>
   </fieldset>
-  <br/>
-  <%= render :partial => "leads/org_details", :locals => {:f => f, :belongs_to => "lead_contact", :org => org} %>
 </div>
 
 <%= submit_tag l(:button_save) -%> or 
