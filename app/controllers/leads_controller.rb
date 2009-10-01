@@ -3,7 +3,7 @@ class LeadsController < ApplicationController
   layout 'crm'
   menu_item :leads
   before_filter :find_lead, :only => [:show, :edit, :update, :destroy]
-  before_filter :check_permission
+  before_filter :check_permission, :except => [:auto_complete_for_org_name]
  
   auto_complete_for :location, :name
   auto_complete_for :org, :name
@@ -35,7 +35,9 @@ class LeadsController < ApplicationController
   end
 
   def update
-    params[:lead][:org_attributes][:location] = params[:location][:name]
+    if params[:lead][:org_attributes] && params[:location]
+      params[:lead][:org_attributes][:location] = params[:location][:name]
+    end
     @lead.watcher_user_ids = params[:lead][:watcher_user_ids]
     if @lead.update_attributes(params[:lead])
       flash[:notice] = l(:notice_successful_update)
@@ -61,7 +63,10 @@ class LeadsController < ApplicationController
   end
 
   def create
-    params[:lead][:org_attributes][:location] = params[:location][:name]
+    if params[:lead][:org_attributes] && params[:location]
+      params[:lead][:org_attributes][:location] = params[:location][:name]
+    end
+
     @lead = Lead.new(params[:lead])
     @lead.author_id = User.current.id
     @lead.watcher_user_ids = params[:lead][:watcher_user_ids]
@@ -74,6 +79,15 @@ class LeadsController < ApplicationController
     end
   end
   
+  def auto_complete_for_org_name
+    find_options = { 
+      :conditions => [ "LOWER(name) LIKE ?", '%' + params["org"]["name"].downcase + '%' ], 
+      :order => "name ASC",
+      :limit => 10 } 
+    @items = Org.find(:all, find_options)
+    render :partial => "org_name_auto_complete"
+  end
+
   private
   
   def find_lead
@@ -98,5 +112,4 @@ class LeadsController < ApplicationController
     end
     render_404 unless allowed
   end
-
 end

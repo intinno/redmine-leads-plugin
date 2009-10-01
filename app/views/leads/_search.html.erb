@@ -3,7 +3,7 @@
     <td><b>State</b></td> 
     <td><%= eoc_select 'lead', 'state', Lead::STATES, {:include_blank => "All", :alt_text => "All States"}, {} %></td>
     <td><b>Organization</b></td> 
-    <td><%= text_field_with_auto_complete :org, :name, :size => 15 %></td>
+    <td><%= text_field_with_auto_complete :org, :name, {:size => 15}, :select => "org-name"  %></td>
     <td><b>Note Event Range</b></td>
     <td>
       <%= select_tag 'period', options_for_period_select(nil), :onchange => "fillDates($(this));" %>

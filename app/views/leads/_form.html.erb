@@ -4,29 +4,27 @@
   <%= stylesheet_link_tag 'multiple_select', :plugin => 'leads' %>
   <%= javascript_include_tag 'organization', :plugin => 'leads' %>
   <%= javascript_include_tag 'edit_on_click', :plugin => 'highrise-edit-on-click' %>
+  <%= javascript_tag "
+    function appendOrgId(element, value) {
+      $('lead_org_id').value = value.down('.org-id').innerHTML;
+    }
+    function showNewOrg(){
+     $('lead_org_id').disable();
+     $('existing-org').hide();
+     $('new-org').show();
+     $$('.new-org input').each(function(elem){elem.enable();});
+    }
+    function showExistingOrg(){
+      $('lead_org_id').enable();
+      $('existing-org').show();
+      $('new-org').hide();
+      $$('.new-org input').each(function(elem){elem.disable();});
+    }
+  " %>
 <% end %>
 
 <div class="box"> 
-  <fieldset>
-    <legend> Organization Details </legend>
-    <% fields_for "lead[org_attributes]", @org, :builder => TabularFormBuilder do |ff| %>
-      <p><%= ff.text_field 'name', :label=> "Name", :required => true -%></p>
-
-      <p><label>Location<span class="required"> *</span></label>
-      <%= text_field_with_auto_complete 'location', 'name', :label=> "Area, City", :required => true, :value => @org.location -%></p>
-
-      <p><%= ff.select 'category', Org::CATEGORIES, :label=> "Category", :required => true -%></p>
-      
-      <p><%= ff.eoc_text_field 'head_count', :label=> "Head Count", :size => 10, :alt_text => "Enter the number of students" -%></p>
-      
-      <p><%= ff.eoc_text_field 'email', :label=> "Email", :alt_text => "Enter Email" -%></p>
-      
-      <p><%= ff.eoc_text_field 'website', :label=> "Website", :alt_text => "Add Website Address" -%></p>
-      
-      <p><%= ff.eoc_text_area 'contact_details', :label=> "Contact Details", :rows => 4, :alt_text => "Add address and phone number" -%></p>
-    <% end %>
-  </fieldset>
-
+  <%= render :partial => 'org_details', :locals => {:f => f} %>
   <fieldset>
     <legend> Lead Details </legend>
 

@@ -128,6 +128,7 @@ class Lead < ActiveRecord::Base
   end
 
   def org_attributes=(attrs)
+    return unless attrs["name"]
     self.new_record? || self.org.nil? ?
       self.build_or_create_association("org", attrs) :
       self.org.update_attributes(attrs)
