@@ -1,4 +1,6 @@
-<% if @org.new_record? %>
+<% if org.new_record? %>
+  <%= javascript_include_tag "organization", :plugin => "leads" %>
+  <span id="belongs_to" class="nodisplay"><%=belongs_to%></span>
 <fieldset>
   <legend> Organization Details </legend>
 
@@ -6,7 +8,7 @@
     <p>
       <label>Name <span class="required">*</span></label>
       <%= text_field_with_auto_complete :org, :name, {}, :select => "org-name", :after_update_element => "appendOrgId" %>
-      <span class="nodisplay"><%= link_to_function " or add new", "showNewOrg();", :id => "new-link" %></span>
+      <span class="nodisplay"><%= link_to_function " or add new", "showNewOrg('#{belongs_to}');", :id => "new-link" %></span>
     </p>
     <%= javascript_tag  "Element.insert($('org_name'), {after:$('new-link')})" %>
     <%= f.hidden_field 'org_id' %>
@@ -16,7 +18,7 @@
     <% fields_for "lead[org_attributes]", @org, :builder => TabularFormBuilder do |ff| %>
       <p>
         <%= ff.text_field 'name', :label=> "Name", :required => true -%>
-        <%= link_to_function "or find existing", "showExistingOrg();" %>
+        <%= link_to_function "or find existing", "showExistingOrg('#{belongs_to}');" %>
       </p>
 
       <p><label>Location<span class="required"> *</span></label>
@@ -34,5 +36,5 @@
     <% end %>
   </div>
 </fieldset>
-<%= javascript_tag "showExistingOrg();"%>
+<%= javascript_tag "showExistingOrg('#{belongs_to}');"%>
 <% end %>

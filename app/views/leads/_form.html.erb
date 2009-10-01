@@ -4,27 +4,10 @@
   <%= stylesheet_link_tag 'multiple_select', :plugin => 'leads' %>
   <%= javascript_include_tag 'organization', :plugin => 'leads' %>
   <%= javascript_include_tag 'edit_on_click', :plugin => 'highrise-edit-on-click' %>
-  <%= javascript_tag "
-    function appendOrgId(element, value) {
-      $('lead_org_id').value = value.down('.org-id').innerHTML;
-    }
-    function showNewOrg(){
-     $('lead_org_id').disable();
-     $('existing-org').hide();
-     $('new-org').show();
-     $$('.new-org input').each(function(elem){elem.enable();});
-    }
-    function showExistingOrg(){
-      $('lead_org_id').enable();
-      $('existing-org').show();
-      $('new-org').hide();
-      $$('.new-org input').each(function(elem){elem.disable();});
-    }
-  " %>
 <% end %>
 
 <div class="box"> 
-  <%= render :partial => 'org_details', :locals => {:f => f} %>
+  <%= render :partial => 'org_details', :locals => {:f => f, :belongs_to => "lead", :org => Org.new} %>
   <fieldset>
     <legend> Lead Details </legend>
 

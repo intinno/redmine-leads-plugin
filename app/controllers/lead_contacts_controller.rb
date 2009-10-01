@@ -2,8 +2,9 @@ class LeadContactsController < ApplicationController
   layout 'crm'
   before_filter :find_lead, :only => [:create]
   before_filter :find_lead_contact, :only => [:show, :edit, :update]
-  before_filter :check_permission
+  before_filter :check_permission, :except => [:auto_complete_for_org_name]
   auto_complete_for :location, :name
+  auto_complete_for :org, :name
   menu_item :contacts
 
   def index
@@ -21,10 +22,15 @@ class LeadContactsController < ApplicationController
 
   def new
     @lead_contact = LeadContact.new
+    @org = Org.new
   end
 
   def create
+    if params[:lead_contact][:org_attributes] && params[:location]
+      params[:lead_contact][:org_attributes][:location] = params[:location][:name]
+    end
     params[:lead_contact][:city] = params[:location][:name]
+
     @lead_contact = LeadContact.new(params[:lead_contact])
     @lead_contact.author_id = User.current.id
 
@@ -33,15 +39,18 @@ class LeadContactsController < ApplicationController
       flash[:notice] = l(:notice_successful_create)
       redirect_to lead_or_contact_url 
     else
-      @org = @lead.org if @lead 
+      @org = Org.new if @lead 
       render :action => "new"
     end
   end
 
   def update
+    if params[:lead_contact][:org_attributes] && params[:location]
+      params[:lead_contact][:org_attributes][:location] = params[:location][:name]
+    end
     params[:lead_contact][:city] = params[:location][:name]
+    
     @lead = @lead_contact.lead
-
     if @lead_contact.update_attributes(params[:lead_contact])
       flash[:notice] = l(:notice_successful_create)
       redirect_to lead_or_contact_url 
@@ -52,11 +61,21 @@ class LeadContactsController < ApplicationController
 
   def edit
     @lead = @lead_contact.lead
+    @org = @lead_contact.org
   end
 
   def show
   end
   
+  def auto_complete_for_org_name
+    find_options = { 
+      :conditions => [ "LOWER(name) LIKE ?", '%' + params["org"]["name"].downcase + '%' ], 
+      :order => "name ASC",
+      :limit => 10 } 
+    @items = Org.find(:all, find_options)
+    render :partial => "leads/org_name_auto_complete"
+  end
+
   private
   
   def find_lead

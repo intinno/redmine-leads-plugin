@@ -26,6 +26,8 @@
       <%= hidden_field_tag :send_to_lead, true %>
     <% end %>
   </fieldset>
+  <br/>
+  <%= render :partial => "leads/org_details", :locals => {:f => f, :belongs_to => "lead_contact", :org => org} %>
 </div>
 
 <%= submit_tag l(:button_save) -%> or 

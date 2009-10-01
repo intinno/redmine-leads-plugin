@@ -7,21 +7,18 @@ class Lead < ActiveRecord::Base
   has_many    :contacts,        :class_name => "LeadContact"
   has_one     :latest_note,     :class_name => "LeadNote",    :order => "lead_notes.date DESC"
 
-  belongs_to  :org
   belongs_to  :author,          :class_name => "User"
   belongs_to  :assigned_to,     :class_name => "User"
 
   #extensions
   acts_as_paranoid
   acts_as_watchable
+  belongs_to_org
 
   #attributes
-  attr_accessor :org_name
 
   #constants
   STATES = ["New", "In Progess", "Converted", "Rejected", "Useless"]
-
-  validates_associated :org, :message => "Organization Details are Invalid"
 
   def self.search(options)
     options["lead"] ||= {}
@@ -125,13 +122,6 @@ class Lead < ActiveRecord::Base
     (ids - existing_project_ids).each do |id|
       self.build_or_create_association("leads_projects", :project_id => id)
     end
-  end
-
-  def org_attributes=(attrs)
-    return unless attrs["name"]
-    self.new_record? || self.org.nil? ?
-      self.build_or_create_association("org", attrs) :
-      self.org.update_attributes(attrs)
   end
 
 end

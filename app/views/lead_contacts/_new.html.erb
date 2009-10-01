@@ -1,4 +1,4 @@
 
 <% labelled_tabular_form_for :lead_contact, @lead_contact, :url => {:controller => "lead_contacts", :action => 'create'} do |f|  %>
-  <%= render :partial => "lead_contacts/form", :locals => {:f => f, :from_lead => from_lead} %>
+  <%= render :partial => "lead_contacts/form", :locals => {:f => f, :from_lead => from_lead, :org => Org.new} %>
 <% end %>

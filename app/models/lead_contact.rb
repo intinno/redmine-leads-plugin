@@ -5,13 +5,14 @@ class LeadContact < ActiveRecord::Base
   belongs_to :author, :class_name => "User"
 
   #extensions
+  belongs_to_org
 
   #validations
   validates_presence_of :name
   validates_presence_of :city
 
   #constants
-  DATA_ATTRIBUTES = ["email", "website", "contact_details"]
+  DATA_ATTRIBUTES = ["email", "website", "contact_details", "orgname"]
 
   format_attributes ["contact_details"]
 

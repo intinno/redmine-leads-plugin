@@ -9,6 +9,7 @@
         <th>City</th>
         <th>Email</th>
         <th>Website</th>
+        <th>Organization</th>
       </tr>
       <% @contacts.each do |contact| %>
         <tr class="<%= cycle('odd', 'even') %>">
@@ -16,6 +17,7 @@
           <td><%= contact.city %></td>
           <td><%= contact.email %></td>
           <td><%= contact.website %></td>
+          <td><%= contact.orgname %></td>
         </tr>
       <% end %>
     </table>
