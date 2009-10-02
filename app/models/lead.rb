@@ -20,7 +20,7 @@ class Lead < ActiveRecord::Base
   #constants
   STATES = ["New", "In Progess", "Converted", "Rejected", "Useless"]
 
-  validates_presence_of :org_id, :message => "Organization details cannot be empty"
+  validates_presence_of :org_id, :message => "Organization details cannot be empty", :unless => Proc.new{|lead| lead.org_attributes_submitted}
 
   def self.search(options)
     options["lead"] ||= {}

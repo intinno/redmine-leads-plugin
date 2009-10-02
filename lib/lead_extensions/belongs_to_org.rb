@@ -5,6 +5,7 @@ module LeadExtensions
       base.class_eval do  
         include InstanceMethods
         extend ClassMethods
+        attr_accessor :org_attributes_submitted
       end
     end
 
@@ -14,6 +15,7 @@ module LeadExtensions
         self.new_record? || self.org.nil? ?
           self.build_or_create_association("org", attrs) :
           self.org.update_attributes(attrs)
+        self.org_attributes_submitted = true
       end
 
       def orgname

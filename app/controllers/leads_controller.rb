@@ -4,6 +4,7 @@ class LeadsController < ApplicationController
   menu_item :leads
   before_filter :find_lead, :only => [:show, :edit, :update, :destroy]
   before_filter :check_permission, :except => [:auto_complete_for_org_name]
+  before_filter :set_location, :only => [:update, :create]
  
   auto_complete_for :location, :name
   auto_complete_for :org, :name
@@ -35,9 +36,6 @@ class LeadsController < ApplicationController
   end
 
   def update
-    if params[:lead][:org_attributes] && params[:location]
-      params[:lead][:org_attributes][:location] = params[:location][:name]
-    end
     @lead.watcher_user_ids = params[:lead][:watcher_user_ids]
     if @lead.update_attributes(params[:lead])
       flash[:notice] = l(:notice_successful_update)
@@ -63,10 +61,6 @@ class LeadsController < ApplicationController
   end
 
   def create
-    if params[:lead][:org_attributes] && params[:location]
-      params[:lead][:org_attributes][:location] = params[:location][:name]
-    end
-
     @lead = Lead.new(params[:lead])
     @lead.author_id = User.current.id
     @lead.watcher_user_ids = params[:lead][:watcher_user_ids]
@@ -121,6 +115,14 @@ class LeadsController < ApplicationController
       @show_org_form = true
     else
       @org = Org.new
+    end
+  end
+
+  def set_location
+    if params[:lead][:org_attributes] && params[:org]
+      if params[:org][:location] && !params[:org][:location].eql?("Type to search")
+        params[:lead][:org_attributes][:location] = params[:org][:location]
+      end
     end
   end
 end

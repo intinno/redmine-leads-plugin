@@ -13,7 +13,7 @@
 
     <p><%= f.select 'state', Lead::STATES, :required => true -%></p>
 
-    <p><%= f.eoc_select 'assigned_to_id', @lead.assignable_members.collect{|p| [p.name, p.id]}, {:include_blank => true}, {} -%></p>
+    <p><%= f.select 'assigned_to_id', @lead.assignable_members.collect{|p| [p.name, p.id]}, {:include_blank => true, :selected => User.current.id}, {} -%></p>
 
 
     <p><%= label_tag "Related Product(s)" %><span class="required">*</span></p>
