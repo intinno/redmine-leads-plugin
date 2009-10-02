@@ -9,10 +9,14 @@ class LeadContact < ActiveRecord::Base
 
   #validations
   validates_presence_of :name
-  validates_presence_of :city
+  validates_presence_of :designation
+  validates_format_of   :email,     :with => /^([^@\,\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i, :if => :email?
+  validates_format_of   :mobile,    :with => /^9[0-9]{9}$/, :if => :mobile?
+
+
 
   #constants
-  DATA_ATTRIBUTES = ["email", "website", "contact_details", "orgname"]
+  DATA_ATTRIBUTES = ["designation", "email", "website", "mobile", "landline", "contact_details", "orgname"]
 
   format_attributes ["contact_details"]
 

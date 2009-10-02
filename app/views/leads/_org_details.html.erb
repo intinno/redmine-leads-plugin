@@ -1,4 +1,4 @@
-<% if !controller.action_name.eql?("edit") %>
+<% unless ["edit", "update"].include?(controller.action_name) %>
   <%= hidden_field_tag 'org_state', "#{(params["org_state"] || "")}" %> 
   <div id="org-container" style="<%= @bypass_org ? "display:none" : "" %>">
   <%= javascript_include_tag "organization", :plugin => "leads" %>

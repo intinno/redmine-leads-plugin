@@ -7,16 +7,22 @@
   <fieldset>
     <legend>Contact Details</legend>
 
-    <p> <%= f.text_field :name, :label => "Name", :required => true %></p>
+    <p><%= f.text_field :designation, :label => "Designation", :required => true %></p>
+
+    <p><%= f.text_field :name, :label => "Name", :required => true %></p>
     
     <p>
-      <label>City<span class="required"> *</span></label>
+      <label>City</label>
       <%= text_field_with_auto_complete 'location', 'name_1', {:value => @lead_contact.city, :id => "location_name_1"}, :url => {:action => "auto_complete_for_location_name", :controller => "lead_contacts"} -%>
     </p>
 
     <p><%= f.eoc_text_field 'email', :label=> "Email", :alt_text => "Enter Email" -%></p>
       
     <p><%= f.eoc_text_field 'website', :label=> "Website", :alt_text => "Add Website Address" -%></p>
+    
+    <p><%= f.eoc_text_field 'mobile', :label=> "Mobile", :alt_text => "10 digit mobile number" -%></p>
+      
+    <p><%= f.eoc_text_field 'landline', :label=> "Landline", :alt_text => "landline number, with std code " -%></p>
       
     <p><%= f.eoc_text_area 'contact_details', :label=> "Contact Details", :rows => 4, :alt_text => "Add address and phone number" -%></p>
 
