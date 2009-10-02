@@ -1,4 +1,6 @@
 class OrgsController < ApplicationController
+  before_filter :set_location_name
+  auto_complete_for :location, :name
   def index
     @orgs = Org.all
   end
@@ -41,4 +43,15 @@ class OrgsController < ApplicationController
     flash[:notice] = "Successfully destroyed org."
     redirect_to orgs_url
   end
+
+  private
+
+    def set_location_name
+      if params[:org]
+        if params[:org][:location]
+          params[:location] ||={}
+          params[:location][:name] = params[:org][:location]
+        end
+      end
+    end
 end

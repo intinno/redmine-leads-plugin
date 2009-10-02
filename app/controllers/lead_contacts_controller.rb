@@ -3,7 +3,9 @@ class LeadContactsController < ApplicationController
   before_filter :find_lead, :only => [:create]
   before_filter :find_lead_contact, :only => [:show, :edit, :update]
   before_filter :check_permission, :except => [:auto_complete_for_org_name]
-  before_filter :set_location_name, :only => [:auto_complete_for_location_name, :create, :update]
+  before_filter :reassign_location_name, :only => [:auto_complete_for_location_name, :create, :update]
+  before_filter :sanitize_location_params, :only => [:create, :update]
+ 
   auto_complete_for :location, :name
   auto_complete_for :org, :name
   menu_item :contacts
@@ -23,15 +25,10 @@ class LeadContactsController < ApplicationController
 
   def new
     @lead_contact = LeadContact.new
-    @org = Org.new
+    @contact_org = Org.new
   end
 
   def create
-    if params[:lead_contact][:org_attributes] && params[:location]
-      params[:lead_contact][:org_attributes][:location] = params[:location][:name]
-    end
-    params[:lead_contact][:city] = params[:location][:name]
-
     @lead_contact = LeadContact.new(params[:lead_contact])
     @lead_contact.author_id = User.current.id
 
@@ -40,17 +37,13 @@ class LeadContactsController < ApplicationController
       flash[:notice] = l(:notice_successful_create)
       redirect_to lead_or_contact_url 
     else
-      @org = Org.new 
+      make_org
+      @org = @lead.org if @lead
       render :action => "new"
     end
   end
 
   def update
-    if params[:lead_contact][:org_attributes] && params[:location]
-      params[:lead_contact][:org_attributes][:location] = params[:location][:name]
-    end
-    params[:lead_contact][:city] = params[:location][:name]
-    
     @lead = @lead_contact.lead
     if @lead_contact.update_attributes(params[:lead_contact])
       flash[:notice] = l(:notice_successful_create)
@@ -110,9 +103,36 @@ class LeadContactsController < ApplicationController
     render_404 unless allowed
   end
 
-  def set_location_name
+  def reassign_location_name
     if params[:location][:name_1]
       params[:location][:name] = params[:location][:name_1]
+    end
+  end
+
+  def make_org
+    if params["org_state"].eql?("cancel")
+      @bypass_org = true
+    else
+      if params[:lead_contact][:org_id]
+        @contact_org = Org.find(params[:lead_contact][:org_id]) rescue Org.new
+      elsif params[:lead_contact][:org_attributes]
+        @contact_org = Org.new(params[:lead_contact][:org_attributes])
+        @show_org_form = true
+      else
+        @contact_org = Org.new
+      end
+    end
+  end
+
+  def sanitize_location_params
+    if params[:lead_contact][:org_attributes] && params[:org]
+      if params[:org][:location] && !params[:org][:location].eql?("Type to search")
+        params[:lead_contact][:org_attributes][:location] = params[:org][:location]
+      end
+    end
+
+    if params[:location][:name] && !params[:location][:name].eql?("Type to search")
+      params[:lead_contact][:city] = params[:location][:name]
     end
   end
 

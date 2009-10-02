@@ -1,4 +1,6 @@
-<% if org.new_record? %>
+<% if !controller.action_name.eql?("edit") %>
+  <%= hidden_field_tag 'org_state', "#{(params["org_state"] || "")}" %> 
+  <div id="org-container" style="<%= @bypass_org ? "display:none" : "" %>">
   <%= javascript_include_tag "organization", :plugin => "leads" %>
   <span id="belongs_to" class="nodisplay"><%=belongs_to%></span>
 <fieldset>
@@ -7,11 +9,12 @@
   <div id="existing-org" >
     <p>
       <label>Name <span class="required">*</span></label>
-      <%= text_field_with_auto_complete :org, :name, {}, :select => "org-name", :after_update_element => "appendOrgId" %>
+      <%= text_field_with_auto_complete :org, :name, {:value => (org.new_record? ? nil : org.name)}, :select => "org-name", :after_update_element => "appendOrgId" %>
       <span class="nodisplay"><%= link_to_function " or add new", "showNewOrg('#{belongs_to}');", :id => "new-link" %></span>
     </p>
     <%= javascript_tag  "Element.insert($('org_name'), {after:$('new-link')})" %>
-    <%= f.hidden_field 'org_id' %>
+    <%= f.hidden_field 'org_id', :value => (org.new_record? ? "" : org.id) %>
+    <%= params["org-state"] %>
   </div>
 
   <div id="new-org" style="display:none;" class="new-org">
@@ -22,7 +25,7 @@
       </p>
 
       <p><label>Location<span class="required"> *</span></label>
-      <%= text_field_with_auto_complete 'location', 'name', :label=> "Area, City", :required => true, :value => org.location -%></p>
+      <%= text_field_with_auto_complete 'org', 'location', {:label=> "Area, City", :required => true, :value => org.location}, :url => {:controller => "orgs", :action => "auto_complete_for_location_name"}%></p>
 
       <p><%= ff.select 'category', Org::CATEGORIES, :label=> "Category", :required => true -%></p>
 
@@ -36,5 +39,17 @@
     <% end %>
   </div>
 </fieldset>
-<%= javascript_tag "showExistingOrg('#{belongs_to}');"%>
+
+
+  <% if @show_org_form %>
+    <%= javascript_tag "showNewOrg('#{belongs_to}');"%>
+  <% else %>
+    <%= javascript_tag "showExistingOrg('#{belongs_to}');"%>
+  <% end %>
+</div>
+<% unless belongs_to.eql?('lead') %>
+  <div style="width:100%;text-align:right;margin-bottom:10px;">
+    <%= link_to_function "Add/Remove Organization", "$('org-container').toggle();toggleOrg();return false;"%>
+  </div>
+<% end %>
 <% end %>

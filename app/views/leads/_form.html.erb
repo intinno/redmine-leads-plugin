@@ -7,7 +7,7 @@
 <% end %>
 
 <div class="box"> 
-  <%= render :partial => 'org_details', :locals => {:f => f, :belongs_to => "lead", :org => Org.new} %>
+  <%= render :partial => 'org_details', :locals => {:f => f, :belongs_to => "lead", :org => @org} %>
   <fieldset>
     <legend> Lead Details </legend>
 

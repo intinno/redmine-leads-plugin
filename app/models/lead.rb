@@ -20,6 +20,8 @@ class Lead < ActiveRecord::Base
   #constants
   STATES = ["New", "In Progess", "Converted", "Rejected", "Useless"]
 
+  validates_presence_of :org_id, :message => "Organization details cannot be empty"
+
   def self.search(options)
     options["lead"] ||= {}
     options["org"] ||= {}

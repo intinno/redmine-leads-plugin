@@ -74,7 +74,7 @@ class LeadsController < ApplicationController
       flash[:notice] = l(:notice_successful_create)
       redirect_to :action => "show", :id => @lead.id
     else
-      @org = Org.new(params[:lead][:org_attributes])
+      make_org
       render :action => "new"
     end
   end
@@ -111,5 +111,16 @@ class LeadsController < ApplicationController
       allowed = @lead.visible_to?(User.current)
     end
     render_404 unless allowed
+  end
+  
+  def make_org
+    if params[:lead][:org_id]
+      @org = Org.find(params[:lead][:org_id]) rescue Org.new
+    elsif params[:lead][:org_attributes]
+      @org = Org.new(params[:lead][:org_attributes])
+      @show_org_form = true
+    else
+      @org = Org.new
+    end
   end
 end

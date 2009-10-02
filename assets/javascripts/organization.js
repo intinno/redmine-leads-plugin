@@ -14,3 +14,15 @@ function showExistingOrg(belongsTo){
   $('new-org').hide();
   $$('.new-org input').each(function(elem){elem.disable();});
 }
+function toggleOrg(){
+  if($('org_state').value == ''){
+    $('org_state').value = 'cancel'
+    $$('.new-org input').each(function(elem){elem.disable();});
+    $$('.existing-org input').each(function(elem){elem.disable();});
+  }else{
+    $('org_state').value=''
+    $$('.new-org input').each(function(elem){elem.enable();});
+    $$('.existing-org input').each(function(elem){elem.enable();});
+  }
+}
+
