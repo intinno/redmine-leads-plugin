@@ -26,6 +26,7 @@ class LeadContactsController < ApplicationController
   def new
     @lead_contact = LeadContact.new
     @contact_org = Org.new
+    @bypass_org = true
   end
 
   def create
@@ -56,6 +57,7 @@ class LeadContactsController < ApplicationController
   def edit
     @lead = @lead_contact.lead
     @org = @lead_contact.org
+    @bypass_org = true
   end
 
   def show

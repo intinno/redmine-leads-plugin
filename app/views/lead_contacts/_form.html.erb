@@ -2,19 +2,17 @@
 
 <div class="box">
     <%= error_messages_for :lead_contact %>
-  <%= render :partial => "leads/org_details", :locals => {:f => f, :belongs_to => "lead_contact", :org => org} %>
   <br/>
-  <fieldset>
-    <legend>Contact Details</legend>
-
-    <p><%= f.text_field :designation, :label => "Designation", :required => true %></p>
-
     <p><%= f.text_field :name, :label => "Name", :required => true %></p>
     
     <p>
       <label>City</label>
       <%= text_field_with_auto_complete 'location', 'name_1', {:value => @lead_contact.city, :id => "location_name_1"}, :url => {:action => "auto_complete_for_location_name", :controller => "lead_contacts"} -%>
     </p>
+
+    <% if ["new", "create"].include?(controller.action_name) %>
+      <p><label class="tabular-label">Organization</label><%= link_to_function "Click Add/Remove Details", "toggleOrg();", :id => "org-toggle-link" %></p>
+    <% end %>
 
     <p><%= f.eoc_text_field 'email', :label=> "Email", :alt_text => "Enter Email" -%></p>
       
@@ -33,8 +31,10 @@
     <% if send_to_lead %>
       <%= hidden_field_tag :send_to_lead, true %>
     <% end %>
-  </fieldset>
 </div>
+
+<%= render :partial => "leads/org_details", :locals => {:f => f, :belongs_to => "lead_contact", :org => org} %>
+
 
 <%= submit_tag l(:button_save) -%> or 
 <% if ["new", "edit"].include?(controller.action_name) %>

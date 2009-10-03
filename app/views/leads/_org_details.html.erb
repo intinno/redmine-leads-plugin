@@ -1,5 +1,5 @@
 <% unless ["edit", "update"].include?(controller.action_name) %>
-  <%= hidden_field_tag 'org_state', "#{(params["org_state"] || "")}" %> 
+  <%= hidden_field_tag 'org_state', "#{(params["org_state"] || "cancel")}" %> 
   <div id="org-container" style="<%= @bypass_org ? "display:none" : "" %>">
   <%= javascript_include_tag "organization", :plugin => "leads" %>
   <span id="belongs_to" class="nodisplay"><%=belongs_to%></span>
@@ -8,24 +8,30 @@
 
   <div id="existing-org" >
     <p>
-      <label>Name <span class="required">*</span></label>
+      <label>Search Organization <span class="required">*</span></label>
       <%= text_field_with_auto_complete :org, :name, {:value => (org.new_record? ? nil : org.name)}, :select => "org-name", :after_update_element => "appendOrgId" %>
       <span class="nodisplay"><%= link_to_function " or add new", "showNewOrg('#{belongs_to}');", :id => "new-link" %></span>
     </p>
+      <% if belongs_to.eql?("lead_contact") %>
+        <p><%= f.text_field :designation, :label => "Designation", :required => true %></p>
+      <% end %>
     <%= javascript_tag  "Element.insert($('org_name'), {after:$('new-link')})" %>
     <%= f.hidden_field 'org_id', :value => (org.new_record? ? "" : org.id) %>
-    <%= params["org-state"] %>
   </div>
 
   <div id="new-org" style="display:none;" class="new-org">
-    <% fields_for "#{belongs_to}[org_attributes]", org, :builder => TabularFormBuilder do |ff| %>
+    <% new_org = (@show_org_form ? org : Org.new) %>
+    <% fields_for "#{belongs_to}[org_attributes]", new_org, :builder => TabularFormBuilder do |ff| %>
       <p>
         <%= ff.text_field 'name', :label=> "Name", :required => true -%>
         <%= link_to_function "or find existing", "showExistingOrg('#{belongs_to}');" %>
       </p>
 
+      <% if belongs_to.eql?("lead_contact") %>
+        <p><%= f.text_field :designation, :label => "Designation", :required => true %></p>
+      <% end %>
       <p><label>Location<span class="required"> *</span></label>
-      <%= text_field_with_auto_complete 'org', 'location', {:label=> "Area, City", :required => true, :value => org.location}, :url => {:controller => "orgs", :action => "auto_complete_for_location_name"}%></p>
+      <%= text_field_with_auto_complete 'org', 'location', {:label=> "Area, City", :required => true, :value => new_org.location}, :url => {:controller => "orgs", :action => "auto_complete_for_location_name"}%></p>
 
       <p><%= ff.select 'category', Org::CATEGORIES, :label=> "Category", :required => true -%></p>
 
@@ -47,9 +53,4 @@
     <%= javascript_tag "showExistingOrg('#{belongs_to}');"%>
   <% end %>
 </div>
-<% unless belongs_to.eql?('lead') %>
-  <div style="width:100%;text-align:right;margin-bottom:10px;">
-    <%= link_to_function "Add/Remove Organization", "$('org-container').toggle();toggleOrg();return false;"%>
-  </div>
-<% end %>
 <% end %>

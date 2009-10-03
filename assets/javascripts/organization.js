@@ -1,4 +1,5 @@
 function appendOrgId(element, value) {
+  if (value == null) { return }
   id = $('belongs_to').innerHTML + '_org_id';
   $(id).value = value.down('.org-id').innerHTML;
 }
@@ -16,10 +17,12 @@ function showExistingOrg(belongsTo){
 }
 function toggleOrg(){
   if($('org_state').value == ''){
+    $('org-container').toggle();
     $('org_state').value = 'cancel'
     $$('.new-org input').each(function(elem){elem.disable();});
     $$('.existing-org input').each(function(elem){elem.disable();});
   }else{
+    $('org-container').toggle();
     $('org_state').value=''
     $$('.new-org input').each(function(elem){elem.enable();});
     $$('.existing-org input').each(function(elem){elem.enable();});

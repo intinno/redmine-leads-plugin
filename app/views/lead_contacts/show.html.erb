@@ -15,6 +15,10 @@
     <table>
       <tr><td><b>Designation:</b></td><td><%= @lead_contact.designation %></td></tr>
       <tr><td><b>Name:</b></td><td><%= @lead_contact.name %></td></tr>
+      <% if @lead_contact.org %>
+        <tr><td><b>Organization:</b></td><td><%= @lead_contact.org.name%></td></tr>
+        <tr><td><b>Designation:</b></td><td><%= @lead_contact.designation %></td></tr>
+      <% end %>
       <tr><td><b>City:</b></td><td><%= @lead_contact.city %></td></tr>
       <tr><td><b>Website:</b></td><td><%= @lead_contact.website %></td></tr>
       <tr><td><b>Email:</b></td><td><%= @lead_contact.email %></td></tr>
@@ -24,3 +28,16 @@
     </table>
 </div>
 
+<% if @lead_contact.org %>
+<fieldset>
+  <legend>Organization Details - <%= @lead_contact.org.name %></legend>
+  <table>
+    <tr><td><b>Location:</b></td><td><%= @lead_contact.org.location %></td></tr>
+    <tr><td><b>Category:</b></td><td><%= @lead_contact.org.category %></td></tr>
+    <tr><td><b>Head Count:</b></td><td><%= @lead_contact.org.head_count %></td></tr>
+    <tr><td><b>Email:</b></td><td><%= @lead_contact.org.email %></td></tr>
+    <tr><td><b>Website:</b></td><td><%= @lead_contact.org.website %></td></tr>
+    <tr><td><b>Contact Details:</b></td><td><%= @lead_contact.org.contact_details %></td></tr>
+  </table>
+</fieldset>
+<% end %>
