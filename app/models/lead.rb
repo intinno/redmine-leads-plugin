@@ -32,8 +32,6 @@ class Lead < ActiveRecord::Base
     product_id      = options["lead"]["product_id"]
     state           = options["lead"]["state"]
     assigned_to_id  = options["lead"]["assigned_to_id"]
-    start_date      = options["from"]
-    end_date        = options["to"]
 
     orgs = []
     orgs << Org.find_by_name(org_name) if org_name.not_blank? && org_name.not_eql?("Type to search")
@@ -52,14 +50,6 @@ class Lead < ActiveRecord::Base
     leads = product_id.blank? ? 
       Lead.find(:all, options) : 
       Lead.find(:all, options) & Project.find(product_id).leads.find(:all, include_options).uniq
-
-    leads = start_date.blank? ?
-      leads : 
-      leads & LeadNote.find(:all, :conditions => "date >= '#{start_date} 00:00:00'", :include => :lead).collect{|n| n.lead}.uniq
-
-    leads = end_date.blank? ?
-      leads : 
-      leads & LeadNote.find(:all, :conditions => "date <= '#{end_date} 23:59:59'", :include => :lead).collect{|n| n.lead}.uniq
 
     leads.reject{|l| l.not_visible_to?(User.current)}
   end

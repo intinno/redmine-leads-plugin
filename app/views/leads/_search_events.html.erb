@@ -1,0 +1,26 @@
+<fieldset>
+<legend>Search Events</legend>
+<% form_remote_tag(:url => {:controller => "lead_notes", :action => "search"}, :method => :get, :update => "results") do %>
+  <table class="search">
+    <tr>
+      <td><b>Note Event Range</b></td>
+      <td><%= select_tag 'note_period', options_for_period_select(nil), :onchange => "fillEventDates($(this));" %><%= write_date_ranges %></td>
+      <td><b>Event State</b></td> 
+      <td><%= select_tag 'note_state', ["", "Pending", "Completed"].collect{|c| "<option>#{c}</option>"}.join("") %></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><b><%= l(:label_date_from) %></b> <%= text_field_tag 'note_from', @from, :size => 10 %> <%= calendar_for('note_from') %></td>
+      <td><b><%= l(:label_date_to) %></b> <%= text_field_tag 'note_to', @to, :size => 10 %> <%= calendar_for('note_to') %></td>
+      <td><b>Event Type</b></td> 
+      <td><%= select_tag 'note_type', ([""] + LeadNote::CATEGORIES).collect{|c| "<option>#{c}</option>"}.join("") %></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td colspan="4" style="text-align:right"><%= submit_tag "Search Events" %></td>
+      <td> or <%= link_to_function "Search Leads", "$('search_leads').toggle();$('search_events').toggle();"%></td>
+    </tr>
+  </table>
+<% end %>
+</fieldset>
+

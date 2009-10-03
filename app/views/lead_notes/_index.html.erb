@@ -9,7 +9,7 @@
     <div class="<%= cycle('odd', 'even') %>">
       <div id="note-details">
         <h4>
-          <%= image_tag("/images/projects.png") %>  <%= note.category %> on <%= note.date.strftime("%a %d %b %H:%M:%S") %>
+          <%= image_tag("/images/projects.png") %>  <%= note.category %> on <%= note.date.strftime("%a %d %b %H:%M:%S") %>(<%= note.state %>)
         </h4>
         <div id="edit-lead">
           <%= image_tag "/images/edit.png" %> 

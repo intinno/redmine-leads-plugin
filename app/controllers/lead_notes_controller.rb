@@ -5,6 +5,11 @@ class LeadNotesController < ApplicationController
   menu_item :leads
 
 
+  def search
+    @notes = LeadNote.search(params)
+    render :partial => "notes", :layout => false
+  end
+
   def create
     @lead_note = LeadNote.new(params[:lead_note])
     @lead_note.author_id = User.current.id

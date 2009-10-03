@@ -6,6 +6,8 @@
     <p> <%= f.text_field :date, :label => "Date", :required => true, :alt_text => "Set Note Date" %><%= calendar_with_time_for('lead_note_date')  %></p>
 
     <p> <%= f.select :category, LeadNote::CATEGORIES, :label => "Category", :required => true %></p>
+    
+    <p> <%= f.select :state, ["Pending", "Completed"], :label => "State", :required => true %></p>
   </fieldset>
   <fieldset>
     <legend><small>Details</small></legend>

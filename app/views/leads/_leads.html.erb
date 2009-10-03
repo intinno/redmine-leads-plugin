@@ -5,6 +5,7 @@
   <% unless @leads.empty? %>
     <table class="list left-th">
       <tr>
+        <th>S.No.</th>
         <th>Organization Name</th>
         <th>Location</th>
         <th>Added By</th>
@@ -14,8 +15,9 @@
         <th>Latest Note</th>
         <th>Manage</th>
       </tr>
-      <% @leads.each do |lead| %>
+      <% @leads.each_with_index do |lead, index| %>
         <tr class="<%= cycle('odd', 'even') %>">
+          <td><%= index + 1 %></td>
           <td><%= link_to lead.pretty_name, {:controller => 'leads', :action => 'show', :id => lead.id}, :title => "Show Lead" %></td>
           <td><%= lead.org.location %></td>
           <td><%= lead.author.name %></td>

@@ -36,4 +36,27 @@ class LeadNote < ActiveRecord::Base
     "#{category} on #{short_date}"
   end
 
+  def visible_to?(user)
+    user.eql?(self.author) || (self.lead && self.lead.visible_to?(user))
+  end
+
+  def not_visible_to?(user)
+    !visible_to?(user)
+  end
+
+  def self.search(options)
+    state = options["note_state"]
+    type  = options["note_type"] 
+    from  = options["note_from"]
+    to    = options["note_to"]
+
+    conditions = []
+    conditions << "state = '#{state}'" unless state.blank?
+    conditions << "category = '#{type}'" unless type.blank?
+    conditions << "date >= '#{from}'" unless from.blank?
+    conditions << "date <= '#{to}'" unless to.blank?
+
+    notes = LeadNote.find(:all, :conditions => conditions.join(" AND "), :include => [:lead,  :author])
+#    notes.reject{|n| if self.not_visible_to?(User.current)}
+  end
 end

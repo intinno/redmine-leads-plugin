@@ -12,12 +12,8 @@
 
 <h2><%= l(:label_lead_plural) %></h2>
 
-<fieldset>
-  <legend>Search Leads</legend>
-  <% form_remote_tag(:url => {:controller => "leads", :action => "search"}, :method => :get, :update => "results") do %>
-    <%= render :partial => "search" %>
-  <% end %>
-</fieldset>
+<div id="search_leads"><%= render :partial => "search" %></div>
+<div id="search_events" style="display:none;"><%= render :partial => "search_events" %></div>
 
 <div id="results">
   <%= render :partial => 'leads' %>

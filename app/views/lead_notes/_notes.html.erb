@@ -1,0 +1,29 @@
+<div id="leads">
+  <div class="tabs">
+    <ul><li><%= link_to_function "Results", "return false;", :class => "selected" %></li></ul>
+  </div>
+  <% unless @notes.empty? %>
+    <table class="list left-th">
+      <tr>
+        <th>S.No.</th>
+        <th>Type</th>
+        <th>State</th>
+        <th>Time</th>
+        <th>Author</th>
+        <th>Lead</th>
+      </tr>
+      <% @notes.each_with_index do |note, index| %>
+        <tr class="<%= cycle('odd', 'even') %>">
+          <td><%= index + 1 %></td>
+          <td><%= note.category %></td>
+          <td><%= note.state %></td>
+          <td><%= note.date.strftime("%d/%m/%Y %H:%M:%S") %></td>
+          <td><%= note.author.name %></td>
+          <td><% if note.lead %><%= link_to note.lead.org.name, :controller => "leads", :action => "show", :id => note.lead.id %><% end %></td>
+        </tr>
+      <% end %>
+    </table>
+  <% else %>
+    <p class="nodata"><%=l(:label_no_data)%></p>
+  <% end %>
+</div>
