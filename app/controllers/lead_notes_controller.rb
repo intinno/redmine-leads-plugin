@@ -4,6 +4,9 @@ class LeadNotesController < ApplicationController
   auto_complete_for :location, :name
   menu_item :leads
 
+  def index
+    @notes = []
+  end
 
   def search
     @notes = LeadNote.search(params)

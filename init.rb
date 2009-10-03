@@ -30,6 +30,7 @@ Redmine::Plugin.register :leads_plugin do
 Redmine::MenuManager.map :crm_menu do |menu|
   menu.push :leads, {:controller => 'leads', :action => 'index'}, :caption => "Leads"
   menu.push :contacts, {:controller => 'lead_contacts', :action => 'index'}, :caption => "Contacts"
+  menu.push :events, {:controller => 'lead_notes', :action => 'index'}, :caption => "Events"
 end
 end
 

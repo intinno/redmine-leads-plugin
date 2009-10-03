@@ -7,28 +7,24 @@
         <td><%= eoc_select 'lead', 'state', Lead::STATES, {:include_blank => "All", :alt_text => "All States"}, {} %></td>
         <td><b>Organization</b></td> 
         <td><%= text_field_with_auto_complete :org, :name, {:size => 15}, :select => "org-name"  %></td>
-        <td></td>
       </tr>
       <tr>
         <td><b>Assigned To</b></td> 
         <td><%= eoc_select 'lead', 'assigned_to_id',  Lead.assignable_members.collect{|c| [c.name, c.id]}, {:include_blank => true, :alt_text => "All Assignees"}, {}%></td>
         <td><b>Location</b></td> 
         <td><%= text_field_with_auto_complete :location, :name, :size => 15 %></td>
-        <td></td>
       </tr>
       <tr>
         <td><b>Author</b></td> 
         <td><%= eoc_select 'lead', 'author_id',  Lead.assignable_members.collect{|c| [c.name, c.id]}, {:include_blank => true, :alt_text => "All Authors"}, {}%></td>
         <td><b>Products</b></td> 
         <td><%= eoc_select 'lead', 'product_id', Project.products.collect{|p| [p.name, p.id]}, {:include_blank => true, :alt_text => "All Products"}, {} %></td>
-        <td></td>
       </tr>
       <tr>
         <td></td>
         <td></td>
         <td></td>
         <td style="text-align:right"><%= submit_tag "Search Leads" %></td>
-        <td> or <%= link_to_function "Search Events", "$('search_leads').toggle();$('search_events').toggle();"%></td>
       </tr>
     </table>
   <% end %>

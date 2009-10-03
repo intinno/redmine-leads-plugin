@@ -4,18 +4,12 @@
   <%= javascript_include_tag 'edit_on_click', :plugin => 'highrise-edit-on-click' %>
 <% end %>
 
-<div class="contextual">
-  <% if Lead.assignable_members.include?(User.current) %>
-    <%= link_to l(:label_lead_new), {:controller => 'leads', :action => 'new'}, :class => 'icon icon-add' %>
-  <% end %>
-</div>
+<h2>Search Events</h2>
 
-<h2><%= l(:label_lead_plural) %></h2>
-
-<div id="search_leads"><%= render :partial => "search" %></div>
+<div id="search_events"><%= render :partial => "search" %></div>
 
 <div id="results">
-  <%= render :partial => 'leads' %>
+  <%= render :partial => 'notes' %>
 </div>
 
 <% content_for(:header_tags) do %>
