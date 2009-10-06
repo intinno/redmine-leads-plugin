@@ -2,7 +2,10 @@ class LeadNote < ActiveRecord::Base
 
   #asociations
   belongs_to :lead
-  belongs_to :author, :class_name => "User"
+  belongs_to :author,           :class_name => "User"
+  belongs_to :preceding_event,  :class_name => "LeadNote", :foreign_key => "parent_id"
+  belongs_to :corresponder,     :class_name => "User"
+  has_one    :followup_event,   :class_name => "LeadNote", :foreign_key => "parent_id"
 
   #extensions
 
@@ -12,14 +15,22 @@ class LeadNote < ActiveRecord::Base
   #constants
   CATEGORIES =      ["Meeting", "Phone Call", "Email", "Demo", "Quote"]
   RESPONSE_TYPES =  ["Not Interested At All", "Currently Not Interested", "No Reaction", "Moderately Interested", "Very Interested"]
-  DATA_ATTRIBUTES = ["response", "existing_systems", "quote_given", "docs_sent", "features_interested", "customizations", "issues"]
+  DATA_ATTRIBUTES = [ "response", "existing_systems", "quote_given", "docs_sent", "features_interested", "customizations", "issues"]
 
   format_attributes DATA_ATTRIBUTES
+
+  def corresponder_name 
+    corresponder.name rescue ""
+  end
+
+  def followup_event=(attributes)
+    create_or_update_association("followup_event", attributes)
+  end
 
   def attributes_entered
     data_entered = []
 
-    (DATA_ATTRIBUTES + ["other_details"]).each do |attribute|
+    (["corresponded_to", "corresponder_name"] + DATA_ATTRIBUTES + ["other_details"]).each do |attribute|
       begin 
         value = self.send("#{attribute}_html")
       rescue 
@@ -31,8 +42,9 @@ class LeadNote < ActiveRecord::Base
     data_entered
   end
 
-  def summary
-    short_date = date.strftime("%a %b %d")
+  def summary(with_time = false)
+    format = with_time ? "%A, %d %B %H:%M:%S" : "%A, %d %B"
+    short_date = date.strftime(format)
     "#{category} on #{short_date}"
   end
 

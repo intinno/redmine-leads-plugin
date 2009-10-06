@@ -42,6 +42,7 @@ class LeadNotesController < ApplicationController
   def edit
     @lead_note = LeadNote.find(params[:id])
     @lead = @lead_note.lead
+    @add_follow_up = true
   end
   
   private

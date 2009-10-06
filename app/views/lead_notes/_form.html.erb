@@ -1,6 +1,6 @@
 <div class="box">
   <fieldset>
-    <legend><small>Date and Type</small></legend>
+    <legend>Date and Type</legend>
     <%= error_messages_for :lead_note %>
 
     <p> <%= f.text_field :date, :label => "Date", :required => true, :alt_text => "Set Note Date" %><%= calendar_with_time_for('lead_note_date')  %></p>
@@ -10,8 +10,12 @@
     <p> <%= f.select :state, ["Pending", "Completed"], :label => "State", :required => true %></p>
   </fieldset>
   <fieldset>
-    <legend><small>Details</small></legend>
+    <legend>Details</legend>
     <% text_area_options = {:rows => 3, :cols => 60} %>
+    <p><%= f.eoc_text_field :corresponded_to, {:label => "Corresponded To", :alt_text => "Name of the person corresponded with"} %></p>
+    
+    <p><%= f.eoc_select 'corresponder_id', @lead.assignable_members.collect{|p| [p.name, p.id]}, {:include_blank => true, :selected => @lead.assigned_to_id, :alt_text => "Person who corresponded on Intinno's behalf."}, {} -%></p>
+
     <p><%= f.eoc_text_area :existing_systems , {:label => "Existing System", :alt_text => "Describe Exisiting Systems"}.merge(text_area_options) %></p>
 
     <p><%= f.eoc_text_area :quote_given , {:label => "Quote Given", :alt_text => "Add Quote Given"}.merge(text_area_options) %></p>
@@ -30,6 +34,22 @@
 
     <%= f.hidden_field :lead_id, :value => @lead.id %>
   </fieldset>
+  <% if @add_follow_up %>
+  <fieldset>
+    <legend>Followup Event</legend>
+    <% fields_for "lead_note[followup_event]", (@lead_note.followup_event || LeadNote.new), :builder => TabularFormBuilder do |fl| %>
+      <p> <%= fl.text_field :date, :label => "Date", :required => true, :alt_text => "Set Note Date" %><%= calendar_with_time_for('lead_note_followup_event_date')  %></p>
+
+      <p> <%= fl.select :category, LeadNote::CATEGORIES, :label => "Category", :required => true %></p>
+    
+      <p> <%= fl.select :state, ["Pending", "Completed"], :label => "State", :required => true %></p>
+      
+      <%= fl.hidden_field :lead_id, :value => @lead.id %>
+      <%= fl.hidden_field :author_id, :value => User.current.id %>
+      <%= fl.hidden_field :author_id, :value => User.current.id %>
+    <% end %>
+  </fieldset>
+  <% end %>
 </div>
 
 <%= submit_tag l(:button_save) -%>
