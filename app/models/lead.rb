@@ -22,6 +22,15 @@ class Lead < ActiveRecord::Base
 
   validates_presence_of :org_id, :message => "Organization details cannot be empty", :unless => Proc.new{|lead| lead.org_attributes_submitted}
 
+  #callbacks
+  after_create :notify_watchers
+  after_update :notify_watchers
+
+  def notify_watchers
+    suffix = self.created_at == self.updated_at ? "add" : "edit"
+    LeadMailer.send("deliver_lead_#{suffix}", self)
+  end
+
   def self.search(options)
     options["lead"] ||= {}
     options["org"] ||= {}

@@ -18,6 +18,16 @@ class LeadNote < ActiveRecord::Base
   DATA_ATTRIBUTES = [ "response", "existing_systems", "quote_given", "docs_sent", "features_interested", "customizations", "issues"]
 
   format_attributes DATA_ATTRIBUTES
+  
+  #callbacks
+  after_create :notify_watchers
+  after_update :notify_watchers
+
+  def notify_watchers
+    suffix = self.created_at == self.updated_at ? "add" : "edit"
+    LeadMailer.send("deliver_note_#{suffix}", self) 
+  end
+
 
   def corresponder_name 
     corresponder.name rescue ""

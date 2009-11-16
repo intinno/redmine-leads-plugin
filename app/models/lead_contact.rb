@@ -13,7 +13,14 @@ class LeadContact < ActiveRecord::Base
   validates_format_of   :email,     :with => /^([^@\,\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i, :if => :email?
   validates_format_of   :mobile,    :with => /^9[0-9]{9}$/, :if => :mobile?
 
+  #callbacks
+  after_create :notify_watchers
+  after_update :notify_watchers
 
+  def notify_watchers
+    suffix = self.created_at == self.updated_at ? "add" : "edit"
+    LeadMailer.send("deliver_contact_#{suffix}", self) unless self.lead.nil?
+  end
 
   #constants
   DATA_ATTRIBUTES = ["designation", "email", "website", "mobile", "landline", "contact_details", "orgname"]
