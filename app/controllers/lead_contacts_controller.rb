@@ -8,7 +8,8 @@ class LeadContactsController < ApplicationController
  
   auto_complete_for :location, :name
   auto_complete_for :org, :name
-  menu_item :contacts
+  menu_item :contacts, :except => [:new, :create]
+  menu_item :new_contact, :only => [:new, :create]
 
   def index
     @contacts = []

@@ -27,12 +27,12 @@ Redmine::Plugin.register :leads_plugin do
 
   menu :top_menu, :leads, {:controller => 'leads', :action => 'index'}, :caption => "CRM"
 
-Redmine::MenuManager.map :crm_menu do |menu|
-  menu.push :leads, {:controller => 'leads', :action => 'index'}, :caption => "Search Leads"
-  menu.push :new_leads, {:controller => 'leads', :action => 'new'}, :caption => "Add Lead"
-  menu.push :contacts, {:controller => 'lead_contacts', :action => 'index'}, :caption => "Search Contacts"
-  menu.push :new_contacts, {:controller => 'lead_contacts', :action => 'new'}, :caption => "Add Contact"
-  menu.push :events, {:controller => 'lead_notes', :action => 'index'}, :caption => "Search Events"
-end
+  Redmine::MenuManager.map :crm_menu do |menu|
+    menu.push :leads, {:controller => 'leads', :action => 'index'}, :caption => "Search Leads"
+    menu.push :new_lead, {:controller => 'leads', :action => 'new'}, :caption => "Add Lead"
+    menu.push :contacts, {:controller => 'lead_contacts', :action => 'index'}, :caption => "Search Contacts"
+    menu.push :new_contact, {:controller => 'lead_contacts', :action => 'new'}, :caption => "Add Contact"
+    menu.push :events, {:controller => 'lead_notes', :action => 'index'}, :caption => "Search Events"
+  end
 end
 

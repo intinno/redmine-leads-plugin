@@ -1,11 +1,13 @@
 class LeadsController < ApplicationController
   unloadable
   layout 'crm'
-  menu_item :leads
   before_filter :find_lead, :only => [:show, :edit, :update, :destroy]
   before_filter :check_permission, :except => [:auto_complete_for_org_name]
   before_filter :set_location, :only => [:update, :create]
  
+  menu_item :leads, :except => [:new, :create]
+  menu_item :new_lead, :only => [:new, :create]
+
   auto_complete_for :location, :name
   auto_complete_for :org, :name
 
