@@ -43,8 +43,8 @@ class Lead < ActiveRecord::Base
     assigned_to_id  = options["lead"]["assigned_to_id"]
 
     orgs = []
-    orgs << Org.find_all_by_name(org_name) if org_name.not_blank? && org_name.not_eql?("Type to search")
-    orgs << Org.find_all_by_location(org_location) if org_location.not_blank? && org_location.not_eql?("Type to search")
+    orgs += Org.find_all_by_name(org_name) if org_name.not_blank? && org_name.not_eql?("Type to search")
+    orgs += Org.find_all_by_location(org_location) if org_location.not_blank? && org_location.not_eql?("Type to search")
     return [] if orgs.uniq.eql?([nil])
 
     conditions = []
